@@ -10,6 +10,7 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 2: Implement Iris-PC Terminal CRT 6-digit PIN gate (#000d00 / #00ff66) with auto-advance, backspace rewind, shake on error, and 48h localStorage session persistence.
 - [x] Task 3: Implement 9-card minimalist tactical launchpad grid (AI, Security, Intel, Fleet, Games, Science, Social, Technology, Standby) with distributed service ingress routes.
 - [x] Task 4: Implement client-side real-time filter across all cards, links, and subdomains.
-- [ ] Task 5: Initialize Git repository, commit code, create GitHub repository under Prometheus-Group-NZ, and push to main.
-- [ ] Task 6: Provision Cloudflare DNS CNAME for hyperion.prometheus.nz.
-- [ ] Task 7: Register hyperion.prometheus.nz in Arachne ingress routing matrix.
+- [x] Task 5: Initialize Git repository, commit code, create GitHub repository under Prometheus-Group-NZ, and push to main.
+- [x] Task 6: Prepare Cloudflare Pages configuration (wrangler.jsonc) and public build directory.
+- [x] Task 7: Register hyperion.prometheus.nz in Arachne ingress routing matrix.
+
