@@ -1,0 +1,19 @@
+{
+  "name": "hyperion",
+  "version": "1.0.0",
+  "description": "Hyperion - Central Tactical Fleet Launchpad & Ingress Catalogue for Prometheus Group NZ",
+  "private": true,
+  "scripts": {
+    "dev": "npx wrangler pages dev public --port 8788",
+    "deploy": "npx wrangler pages deploy public --project-name hyperion"
+  },
+  "keywords": [
+    "hyperion",
+    "prometheus",
+    "launchpad",
+    "cloudflare-pages",
+    "tactical-portal"
+  ],
+  "author": "Prometheus Group NZ",
+  "license": "UNLICENSED"
+}

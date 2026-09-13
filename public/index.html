@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>HYPERION // Prometheus Fleet Launchpad</title>
+  <meta name="description" content="Hyperion - Central Ingress Catalogue and Minimalist Tactical Fleet Launchpad for Prometheus Group NZ">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-base: #06090c;
+      --bg-surface: #0c1017;
+      --bg-card: rgba(14, 20, 28, 0.85);
+      --bg-card-hover: rgba(22, 32, 45, 0.95);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(0, 255, 102, 0.35);
+      
+      --accent-green: #00ff66;
+      --accent-cyan: #00e5ff;
+      --accent-blue: #3b82f6;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --crt-bg: #000d00;
+      --crt-phosphor: #00ff66;
+      --crt-dim: rgba(0, 255, 102, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(0, 255, 102, 0.03) 0%, transparent 50%);
+    }
+
+    /* ==========================================================================
+       IRIS-PC TERMINAL CRT AUTHENTICATION OVERLAY
+       ========================================================================== */
+    #authOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      width: 100dvw;
+      height: 100vh;
+      height: 100dvh;
+      z-index: 999999;
+      background-color: var(--crt-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 4vw, 32px);
+      box-sizing: border-box;
+      font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+      color: var(--crt-phosphor);
+      overflow: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    #authOverlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .auth-center-stage {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 32px 24px;
+      background: rgba(0, 20, 5, 0.4);
+      border: 1px solid rgba(0, 255, 102, 0.2);
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(0, 255, 102, 0.08), inset 0 0 20px rgba(0, 255, 102, 0.03);
+    }
+
+    .auth-badge {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--crt-dim);
+      margin-bottom: 8px;
+    }
+
+    .auth-title {
+      font-size: clamp(20px, 5vw, 26px);
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--crt-phosphor);
+      text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+      margin-bottom: 24px;
+    }
+
+    .auth-otp-pure {
+      display: flex;
+      gap: clamp(8px, 2.5vw, 14px);
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    .otp-square {
+      flex: 0 1 clamp(42px, 12vw, 56px);
+      width: clamp(42px, 12vw, 56px);
+      height: clamp(52px, 15vw, 66px);
+      background-color: rgba(0, 35, 10, 0.7);
+      border: 1px solid rgba(0, 255, 102, 0.3);
+      border-radius: 8px;
+      color: var(--crt-phosphor);
+      font-size: clamp(24px, 7vw, 32px);
+      font-weight: 700;
+      font-family: inherit;
+      text-align: center;
+      outline: none;
+      box-sizing: border-box;
+      caret-color: transparent;
+      transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+    }
+
+    .otp-square:focus {
+      border-color: var(--crt-phosphor);
+      background-color: rgba(0, 50, 15, 0.85);
+      box-shadow: 0 0 14px rgba(0, 255, 102, 0.4);
+    }
+
+    .auth-stay-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: rgba(0, 255, 102, 0.65);
+      margin-top: 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+    }
+
+    .auth-stay-toggle:hover {
+      color: var(--crt-phosphor);
+    }
+
+    .auth-stay-toggle input {
+      accent-color: var(--crt-phosphor);
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+    }
+
+    .auth-status-msg {
+      margin-top: 18px;
+      min-height: 20px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .auth-status-msg.error {
+      color: #ff3333;
+      text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+      animation: shake 0.35s ease-in-out;
+    }
+
+    .auth-status-msg.info {
+      color: var(--crt-phosphor);
+      text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* ==========================================================================
+       MAIN LAUNCHPAD CONTAINER & HEADER
+       ========================================================================== */
+    .app-shell {
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(16px, 3vw, 36px);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      flex: 1;
+    }
+
+    header.top-hud {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-symbol {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 255, 102, 0.2));
+      border: 1px solid rgba(0, 229, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
+    }
+
+    .brand-text h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(16px, 3vw, 20px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #fff;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      max-width: 520px;
+      justify-content: flex-end;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 14px 10px 34px;
+      color: #fff;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .btn-lock {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-lock:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--accent-red);
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       9-CARD MINIMALIST TACTICAL GRID
+       ========================================================================== */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 1120px) {
+      .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sector-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sector-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .sector-card.highlight {
+      border-color: var(--accent-cyan);
+    }
+
+    .sector-card.standby {
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      background: rgba(14, 20, 28, 0.4);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 240px;
+    }
+
+    .sector-card.standby:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(14, 20, 28, 0.6);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 12px;
+    }
+
+    .sector-tag {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .sector-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot-ai { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
+    .dot-sec { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .dot-intel { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+    .dot-fleet { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .dot-games { background: #a855f7; box-shadow: 0 0 8px #a855f7; }
+    .dot-sci { background: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
+    .dot-soc { background: #ec4899; box-shadow: 0 0 8px #ec4899; }
+    .dot-tech { background: #eab308; box-shadow: 0 0 8px #eab308; }
+    .dot-standby { background: #64748b; box-shadow: 0 0 8px #64748b; }
+
+    .sector-index {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: all 0.15s ease;
+    }
+
+    .link-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.14);
+      transform: translateX(3px);
+    }
+
+    .link-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .link-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .link-subdomain {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .port-pill {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      padding: 2px 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .launch-arrow {
+      color: var(--text-dim);
+      font-size: 13px;
+      transition: color 0.15s, transform 0.15s;
+    }
+
+    .link-item:hover .launch-arrow {
+      color: var(--accent-cyan);
+      transform: translate(2px, -2px);
+    }
+
+    /* Standby Card Body */
+    .standby-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .standby-icon {
+      font-size: 28px;
+      color: var(--text-dim);
+      opacity: 0.6;
+    }
+
+    .standby-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+    }
+
+    .standby-desc {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      max-width: 200px;
+    }
+
+    footer.bottom-bar {
+      margin-top: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 6px var(--accent-green);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       IRIS-PC CRT TERMINAL AUTHENTICATION OVERLAY (6-DIGIT PIN)
+       ======================================================================== -->
+  <div id="authOverlay">
+    <div class="auth-center-stage">
+      <div class="auth-badge">PROMETHEUS SECURITY GATEWAY</div>
+      <div class="auth-title">HYPERION INGRESS</div>
+      
+      <div class="auth-otp-pure" id="authPinContainer">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-square" data-idx="0" autocomplete="off" autofocus>
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-square" data-idx="1" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-square" data-idx="2" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-square" data-idx="3" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-square" data-idx="4" autocomplete="off">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-square" data-idx="5" autocomplete="off">
+      </div>
+
+      <label class="auth-stay-toggle" id="authStayWrapper">
+        <input type="checkbox" id="authStayCheckbox" checked>
+        <span>STAY LOGGED IN (48H)</span>
+      </label>
+
+      <div id="authStatusMsg" class="auth-status-msg">ENTER AUTHORIZATION PIN</div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MAIN HYPERION 9-CARD LAUNCHPAD INTERFACE
+       ======================================================================== -->
+  <div class="app-shell" id="mainApp">
+    <header class="top-hud">
+      <div class="brand-section">
+        <div class="brand-symbol">&#9650;</div>
+        <div class="brand-text">
+          <h1>HYPERION</h1>
+          <p>PROMETHEUS FLEET LAUNCHPAD // 25 INGRESS NODES</p>
+        </div>
+      </div>
+
+      <div class="hud-controls">
+        <div class="search-box">
+          <span class="search-icon">&#128269;</span>
+          <input type="text" id="searchInput" placeholder="Filter nodes, subdomains, sectors..." autocomplete="off">
+        </div>
+        <button class="btn-lock" id="btnLockSession" title="Lock Session">&#128274; LOCK</button>
+      </div>
+    </header>
+
+    <main class="grid-container" id="gridContainer">
+      <!-- 01: AI -->
+      <div class="sector-card" data-sector="ai">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-ai"></span> AI &amp; Agents</div>
+          <span class="sector-index">SECTOR // 01</span>
+        </div>
+        <div class="link-list">
+          <a href="https://antigravity.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="antigravity ide agent command center 3000">
+            <div class="link-left">
+              <span class="link-title">Antigravity IDE</span>
+              <span class="link-subdomain">antigravity.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:3000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://opencode.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="opencode remote runtime agent 8080">
+            <div class="link-left">
+              <span class="link-title">OpenCode Runtime</span>
+              <span class="link-subdomain">opencode.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:8080</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://iris.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="iris pc orchestrator duplex voice bridge 3000">
+            <div class="link-left">
+              <span class="link-title">Iris Duplex Voice</span>
+              <span class="link-subdomain">iris.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:3000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://lyra.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="lyra multi-modal voice orchestrator 8000">
+            <div class="link-left">
+              <span class="link-title">Lyra Orchestrator</span>
+              <span class="link-subdomain">lyra.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:8000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 02: SECURITY -->
+      <div class="sector-card" data-sector="security">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-sec"></span> Security &amp; Defense</div>
+          <span class="sector-index">SECTOR // 02</span>
+        </div>
+        <div class="link-list">
+          <a href="https://security.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="security defense intelligence hub 5000">
+            <div class="link-left">
+              <span class="link-title">Security Intelligence Hub</span>
+              <span class="link-subdomain">security.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://heimdall.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="heimdall dashboard portal gateway 5000">
+            <div class="link-left">
+              <span class="link-title">Heimdall Gateway</span>
+              <span class="link-subdomain">heimdall.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://alerts.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="alerts siren remote telemetry emergency incident">
+            <div class="link-left">
+              <span class="link-title">Siren Alerts</span>
+              <span class="link-subdomain">alerts.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">SIREN</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 03: INTEL -->
+      <div class="sector-card" data-sector="intel">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-intel"></span> Intel &amp; SIGINT</div>
+          <span class="sector-index">SECTOR // 03</span>
+        </div>
+        <div class="link-list">
+          <a href="https://halo.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="halo wireless sensor array kismet sigint 2501">
+            <div class="link-left">
+              <span class="link-title">Halo Wireless SIGINT</span>
+              <span class="link-subdomain">halo.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:2501</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://military.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="military tactical operations command defense 5000">
+            <div class="link-left">
+              <span class="link-title">Military Tactical Ops</span>
+              <span class="link-subdomain">military.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 04: FLEET -->
+      <div class="sector-card" data-sector="fleet">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-fleet"></span> Fleet &amp; Hardware</div>
+          <span class="sector-index">SECTOR // 04</span>
+        </div>
+        <div class="link-list">
+          <a href="https://arachne.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="arachne universal fleet manager telemetry ct 110 5000">
+            <div class="link-left">
+              <span class="link-title">Arachne Fleet Manager</span>
+              <span class="link-subdomain">arachne.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://server.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="server proxmox pve hypervisor 8006">
+            <div class="link-left">
+              <span class="link-title">Proxmox Hypervisor</span>
+              <span class="link-subdomain">server.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:8006</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://admin.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="admin core lan gateway router 80">
+            <div class="link-left">
+              <span class="link-title">Core Gateway Router</span>
+              <span class="link-subdomain">admin.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:80</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://printers.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="printers print management hub cups network spooler 631">
+            <div class="link-left">
+              <span class="link-title">CUPS Print Spooler</span>
+              <span class="link-subdomain">printers.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:631</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 05: GAMES -->
+      <div class="sector-card" data-sector="games">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-games"></span> Games &amp; Spatial</div>
+          <span class="sector-index">SECTOR // 05</span>
+        </div>
+        <div class="link-list">
+          <a href="https://games.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="games interactive gaming cluster entertainment 5000">
+            <div class="link-left">
+              <span class="link-title">Games Cluster</span>
+              <span class="link-subdomain">games.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://simulation.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="simulation virtual modeling engine 5000">
+            <div class="link-left">
+              <span class="link-title">Simulation Engine</span>
+              <span class="link-subdomain">simulation.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://virtualreality.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="virtualreality vr immersive spatial node 5000">
+            <div class="link-left">
+              <span class="link-title">Virtual Reality Node</span>
+              <span class="link-subdomain">virtualreality.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 06: SCIENCE -->
+      <div class="sector-card" data-sector="science">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-sci"></span> Science &amp; Research</div>
+          <span class="sector-index">SECTOR // 06</span>
+        </div>
+        <div class="link-list">
+          <a href="https://science.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="science research laboratory environment 5000">
+            <div class="link-left">
+              <span class="link-title">Science Lab</span>
+              <span class="link-subdomain">science.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://dna.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="dna browser genetic explorer research">
+            <div class="link-left">
+              <span class="link-title">DNA Browser</span>
+              <span class="link-subdomain">dna.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">DNA</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 07: SOCIAL -->
+      <div class="sector-card" data-sector="social">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-soc"></span> Social &amp; Life</div>
+          <span class="sector-index">SECTOR // 07</span>
+        </div>
+        <div class="link-list">
+          <a href="https://family.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="family portal shared services community 5000">
+            <div class="link-left">
+              <span class="link-title">Family Portal</span>
+              <span class="link-subdomain">family.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://finance.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="finance portfolio ledger analytics 5000">
+            <div class="link-left">
+              <span class="link-title">Finance Analytics</span>
+              <span class="link-subdomain">finance.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://adhd.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="adhd cognitive companion focus tracker 5173">
+            <div class="link-left">
+              <span class="link-title">ADHD Companion</span>
+              <span class="link-subdomain">adhd.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5173</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 08: TECHNOLOGY -->
+      <div class="sector-card" data-sector="technology">
+        <div class="card-top">
+          <div class="sector-tag"><span class="sector-dot dot-tech"></span> Technology &amp; Auto</div>
+          <span class="sector-index">SECTOR // 08</span>
+        </div>
+        <div class="link-list">
+          <a href="https://technology.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="technology engineering workspace 5000">
+            <div class="link-left">
+              <span class="link-title">Technology Workspace</span>
+              <span class="link-subdomain">technology.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://motorsport.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="motorsport telemetry racing analytics 5000">
+            <div class="link-left">
+              <span class="link-title">Motorsport Telemetry</span>
+              <span class="link-subdomain">motorsport.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://automotive.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="automotive vehicle diagnostic telemetry 5000">
+            <div class="link-left">
+              <span class="link-title">Automotive Telemetry</span>
+              <span class="link-subdomain">automotive.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:5000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+          <a href="https://mooby.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="mooby cloud video search personalization 3000">
+            <div class="link-left">
+              <span class="link-title">Mooby Video Stream</span>
+              <span class="link-subdomain">mooby.prometheus.nz</span>
+            </div>
+            <div class="link-right">
+              <span class="port-pill">:3000</span>
+              <span class="launch-arrow">&#8599;</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 09: STANDBY / PLACEHOLDER -->
+      <div class="sector-card standby" data-sector="standby">
+        <div class="standby-content">
+          <div class="standby-icon">&#10010;</div>
+          <div class="standby-title">STANDBY // RESERVED</div>
+          <div class="standby-desc">Sector 09 awaiting mission allocation</div>
+          <span class="port-pill" style="margin-top:4px;">PROVISIONED</span>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bottom-bar">
+      <div class="footer-left">
+        <span class="footer-stat"><span class="status-live-dot"></span> PROMETHEUS MESH ONLINE</span>
+        <span>ZONE: prometheus.nz</span>
+      </div>
+      <div>HYPERION // CLOUDFLARE PAGES EDGE DEPLOYMENT</div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      // Configuration & Default Unlock PINs
+      const VALID_PINS = ['111111', '1111'];
+      const SESSION_KEY = 'hyperion_auth_session';
+      const EXPIRY_KEY = 'hyperion_auth_expiry';
+
+      const authOverlay = document.getElementById('authOverlay');
+      const authPinContainer = document.getElementById('authPinContainer');
+      const pinBoxes = authPinContainer.querySelectorAll('.otp-square');
+      const authStatusMsg = document.getElementById('authStatusMsg');
+      const stayCheckbox = document.getElementById('authStayCheckbox');
+      const btnLock = document.getElementById('btnLockSession');
+      const searchInput = document.getElementById('searchInput');
+      const cards = document.querySelectorAll('.sector-card');
+
+      // Check existing session
+      function checkSession() {
+        const session = localStorage.getItem(SESSION_KEY);
+        const expiry = parseInt(localStorage.getItem(EXPIRY_KEY) || '0', 10);
+        if (session === 'ACTIVE' && expiry > Date.now()) {
+          unlockUI();
+        } else {
+          lockUI();
+        }
+      }
+
+      function unlockUI() {
+        authOverlay.classList.add('hidden');
+        searchInput.focus();
+      }
+
+      function lockUI() {
+        localStorage.removeItem(SESSION_KEY);
+        localStorage.removeItem(EXPIRY_KEY);
+        authOverlay.classList.remove('hidden');
+        clearPin();
+        authStatusMsg.className = 'auth-status-msg';
+        authStatusMsg.textContent = 'ENTER AUTHORIZATION PIN';
+        setTimeout(() => {
+          if (pinBoxes[0]) pinBoxes[0].focus();
+        }, 100);
+      }
+
+      function clearPin() {
+        pinBoxes.forEach(b => b.value = '');
+      }
+
+      function getEnteredPin() {
+        return Array.from(pinBoxes).map(b => b.value).join('');
+      }
+
+      function verifyPin() {
+        const entered = getEnteredPin();
+        if (VALID_PINS.includes(entered)) {
+          authStatusMsg.className = 'auth-status-msg info';
+          authStatusMsg.textContent = 'ACCESS GRANTED // INITIALIZING MESH';
+          const duration = stayCheckbox.checked ? (48 * 3600 * 1000) : (4 * 3600 * 1000);
+          localStorage.setItem(SESSION_KEY, 'ACTIVE');
+          localStorage.setItem(EXPIRY_KEY, String(Date.now() + duration));
+          setTimeout(unlockUI, 350);
+        } else {
+          authStatusMsg.className = 'auth-status-msg error';
+          authStatusMsg.textContent = 'ACCESS DENIED // INVALID PIN';
+          clearPin();
+          if (pinBoxes[0]) pinBoxes[0].focus();
+        }
+      }
+
+      // Input navigation for 6 OTP boxes
+      pinBoxes.forEach((box, idx) => {
+        box.addEventListener('input', (e) => {
+          const val = box.value.replace(/[^0-9]/g, '');
+          box.value = val ? val.slice(-1) : '';
+          if (box.value && idx < pinBoxes.length - 1) {
+            pinBoxes[idx + 1].focus();
+          }
+          const fullPin = getEnteredPin();
+          if (fullPin.length === 6) {
+            verifyPin();
+          }
+        });
+
+        box.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !box.value && idx > 0) {
+            pinBoxes[idx - 1].focus();
+          } else if (e.key === 'Enter') {
+            const fullPin = getEnteredPin();
+            if (fullPin.length >= 4) {
+              verifyPin();
+            }
+          }
+        });
+
+        // Paste support
+        box.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+          if (!pasteData) return;
+          for (let i = 0; i < pinBoxes.length; i++) {
+            pinBoxes[i].value = pasteData[i] || '';
+          }
+          const nextIdx = Math.min(pasteData.length, pinBoxes.length - 1);
+          pinBoxes[nextIdx].focus();
+          if (pasteData.length >= 4) {
+            verifyPin();
+          }
+        });
+      });
+
+      // Lock button
+      btnLock.addEventListener('click', lockUI);
+
+      // Search & Filtering
+      searchInput.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase().trim();
+        cards.forEach(card => {
+          if (card.classList.contains('standby')) {
+            card.style.display = q ? 'none' : 'flex';
+            return;
+          }
+
+          const links = card.querySelectorAll('.link-item');
+          let cardMatches = false;
+
+          links.forEach(link => {
+            const searchData = (link.getAttribute('data-search') || '').toLowerCase();
+            const text = link.textContent.toLowerCase();
+            if (!q || searchData.includes(q) || text.includes(q)) {
+              link.style.display = 'flex';
+              cardMatches = true;
+            } else {
+              link.style.display = 'none';
+            }
+          });
+
+          card.style.display = cardMatches ? 'flex' : 'none';
+        });
+      });
+
+      // Initialize
+      checkSession();
+    })();
+  </script>
+</body>
+</html>
