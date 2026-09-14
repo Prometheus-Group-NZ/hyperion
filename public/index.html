@@ -219,17 +219,68 @@
        TOP HUD & CONTROLS
        ========================================================================== */
     .top-hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 16px 24px;
+      padding: 14px 24px;
       border-bottom: 1px solid var(--border-subtle);
       background: rgba(6, 9, 12, 0.95);
-      backdrop-filter: blur(12px);
-      z-index: 100;
+      backdrop-filter: blur(14px);
+      z-index: 1000;
       flex-shrink: 0;
+      transform: translateY(0);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    .top-hud.header-hidden {
+      transform: translateY(-100%);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    /* Floating Macron Button for non-touch devices */
+    .btn-header-macron {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(12, 16, 23, 0.88);
+      border: 1px solid rgba(0, 229, 255, 0.35);
+      border-radius: 20px;
+      color: var(--accent-cyan);
+      padding: 4px 20px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 999;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      transition: all 0.25s ease;
+      display: none;
+    }
+
+    .btn-header-macron:hover {
+      background: rgba(0, 229, 255, 0.2);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.45);
+      color: #fff;
+      transform: translateX(-50%) translateY(2px);
+    }
+
+    /* Only show macron on devices capable of hover when header is hidden */
+    @media (hover: hover) and (pointer: fine) {
+      body.header-is-hidden .btn-header-macron {
+        display: block;
+      }
     }
 
     .brand-section {
@@ -634,42 +685,6 @@
       transition: width 0.1s ease;
     }
 
-    /* FOOTER */
-    footer.bottom-bar {
-      padding: 14px 24px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--text-dim);
-      border-top: 1px solid var(--border-subtle);
-      background: rgba(6, 9, 12, 0.95);
-      z-index: 100;
-      flex-shrink: 0;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .footer-stat {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .status-live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 6px var(--accent-green);
-    }
   </style>
 </head>
 <body>
@@ -721,6 +736,9 @@
     </div>
   </header>
 
+  <!-- Floating Macron Button for Non-Touch Devices -->
+  <button class="btn-header-macron" id="btnHeaderMacron" title="Open Header [—]">&#8212;</button>
+
   <!-- Dynamic 3D Spatial Viewport -->
   <main class="spatial-viewport-3d" id="spatialViewport">
     <div class="space-3d-scene" id="space3DScene">
@@ -738,14 +756,6 @@
       </div>
     </div>
   </main>
-
-  <footer class="bottom-bar">
-    <div class="footer-left">
-      <span class="footer-stat"><span class="status-live-dot"></span> PROMETHEUS MESH ONLINE</span>
-      <span>ZONE: prometheus.nz</span>
-    </div>
-    <div>HYPERION // 3D SPATIAL ZOOM LAUNCHPAD</div>
-  </footer>
 
   <script>
     (function () {
@@ -868,6 +878,8 @@
       const space3DScene = document.getElementById('space3DScene');
       const depthBarFill = document.getElementById('depthBarFill');
       const depthLabel = document.getElementById('depthLabel');
+      const topHud = document.querySelector('.top-hud');
+      const btnHeaderMacron = document.getElementById('btnHeaderMacron');
 
       // Authentication Session Handling
       function checkSession() {
@@ -883,6 +895,7 @@
       function unlockUI() {
         authOverlay.classList.add('hidden');
         searchInput.focus();
+        if (typeof showHeader === 'function') showHeader();
       }
 
       function lockUI() {
@@ -1103,7 +1116,68 @@
         targetCamY = 0;
         targetCamZ = 0;
         document.querySelectorAll('.sector-front-square').forEach(el => el.classList.remove('active-target'));
+        showHeader();
       }
+
+      // ======================================================================
+      // HEADER AUTO-HIDE (5s), MACRON TOGGLE & TOUCH SWIPE-DOWN
+      // ======================================================================
+      let headerHideTimer = null;
+      const AUTO_HIDE_MS = 5000;
+
+      function hideHeader() {
+        if (document.activeElement === searchInput && searchInput.value) return;
+        topHud.classList.add('header-hidden');
+        document.body.classList.add('header-is-hidden');
+      }
+
+      function showHeader() {
+        topHud.classList.remove('header-hidden');
+        document.body.classList.remove('header-is-hidden');
+        resetHeaderTimer();
+      }
+
+      function resetHeaderTimer() {
+        if (headerHideTimer) clearTimeout(headerHideTimer);
+        headerHideTimer = setTimeout(hideHeader, AUTO_HIDE_MS);
+      }
+
+      // Desktop Macron Button
+      btnHeaderMacron.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showHeader();
+      });
+      btnHeaderMacron.addEventListener('mouseenter', showHeader);
+
+      // Keep header alive while interacting with it
+      topHud.addEventListener('mouseenter', resetHeaderTimer);
+      topHud.addEventListener('mousemove', resetHeaderTimer);
+      searchInput.addEventListener('focus', () => {
+        if (headerHideTimer) clearTimeout(headerHideTimer);
+        showHeader();
+      });
+      searchInput.addEventListener('blur', resetHeaderTimer);
+
+      // Touch Devices: Swipe down to reveal header
+      let touchStartY = 0;
+      let touchStartX = 0;
+
+      window.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length > 0) {
+          touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchend', (e) => {
+        if (e.changedTouches && e.changedTouches.length > 0) {
+          const deltaY = e.changedTouches[0].clientY - touchStartY;
+          const deltaX = e.changedTouches[0].clientX - touchStartX;
+          if (deltaY > 40 && Math.abs(deltaY) > Math.abs(deltaX)) {
+            showHeader();
+          }
+        }
+      }, { passive: true });
 
       // Keyboard navigation (ESC at any point returns to landing matrix)
       window.addEventListener('keydown', (e) => {
@@ -1111,6 +1185,7 @@
           resetZoom();
           if (document.activeElement) document.activeElement.blur();
           searchInput.value = '';
+          showHeader();
         }
       });
 
@@ -1239,6 +1314,7 @@
       build3DScene();
       requestAnimationFrame(animationLoop);
       checkSession();
+      resetHeaderTimer();
     })();
   </script>
 </body>

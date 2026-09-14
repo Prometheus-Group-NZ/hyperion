@@ -19,3 +19,4 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 11: Transform landing category cards into square tiles (aspect-ratio 1:1) displaying solely sector titles.
 - [x] Task 12: Implement dynamic 3D spatial viewport with hover-targeted scroll-wheel semantic zoom and 3x3 deep project clusters.
 - [x] Task 13: Reduce 3D card scale by 10%, convert level-2 cards into full clickable anchors (remove launch buttons), remove HUD status text and return button, enforce global ESC key reset.
+- [x] Task 14: Remove lower footer, implement 5-second auto-hide top header with desktop macron toggle tab and touch swipe-down trigger.
