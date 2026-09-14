@@ -245,42 +245,41 @@
       opacity: 0;
     }
 
-    /* Floating Macron Button for non-touch devices */
+    /* Floating Macron Button for non-touch / desktop devices */
     .btn-header-macron {
       position: fixed;
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(12, 16, 23, 0.88);
-      border: 1px solid rgba(0, 229, 255, 0.35);
+      background: rgba(12, 16, 23, 0.92);
+      border: 1px solid rgba(0, 229, 255, 0.4);
       border-radius: 20px;
       color: var(--accent-cyan);
-      padding: 4px 20px;
+      padding: 6px 24px;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
       line-height: 1;
       cursor: pointer;
       z-index: 999;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 229, 255, 0.2);
       transition: all 0.25s ease;
       display: none;
     }
 
     .btn-header-macron:hover {
-      background: rgba(0, 229, 255, 0.2);
+      background: rgba(0, 229, 255, 0.25);
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 16px rgba(0, 229, 255, 0.45);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.55);
       color: #fff;
       transform: translateX(-50%) translateY(2px);
     }
 
-    /* Only show macron on devices capable of hover when header is hidden */
-    @media (hover: hover) and (pointer: fine) {
-      body.header-is-hidden .btn-header-macron {
-        display: block;
-      }
+    body.header-is-hidden .btn-header-macron {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .brand-section {
@@ -894,8 +893,9 @@
 
       function unlockUI() {
         authOverlay.classList.add('hidden');
-        searchInput.focus();
-        if (typeof showHeader === 'function') showHeader();
+        if (typeof showHeader === 'function') {
+          showHeader();
+        }
       }
 
       function lockUI() {
@@ -1126,9 +1126,20 @@
       const AUTO_HIDE_MS = 5000;
 
       function hideHeader() {
-        if (document.activeElement === searchInput && searchInput.value) return;
+        // If user is actively typing in search, don't hide
+        if (document.activeElement === searchInput && searchInput.value.trim().length > 0) return;
+
+        // If search input is focused but empty, blur it cleanly
+        if (document.activeElement === searchInput) {
+          searchInput.blur();
+        }
+
         topHud.classList.add('header-hidden');
         document.body.classList.add('header-is-hidden');
+        if (headerHideTimer) {
+          clearTimeout(headerHideTimer);
+          headerHideTimer = null;
+        }
       }
 
       function showHeader() {
@@ -1139,33 +1150,47 @@
 
       function resetHeaderTimer() {
         if (headerHideTimer) clearTimeout(headerHideTimer);
-        headerHideTimer = setTimeout(hideHeader, AUTO_HIDE_MS);
+        // Only run auto-hide timer if session is unlocked
+        if (authOverlay && authOverlay.classList.contains('hidden')) {
+          headerHideTimer = setTimeout(hideHeader, AUTO_HIDE_MS);
+        }
       }
 
-      // Desktop Macron Button
+      // Desktop Macron Button: Click to reveal header
       btnHeaderMacron.addEventListener('click', (e) => {
         e.stopPropagation();
         showHeader();
       });
-      btnHeaderMacron.addEventListener('mouseenter', showHeader);
 
-      // Keep header alive while interacting with it
-      topHud.addEventListener('mouseenter', resetHeaderTimer);
-      topHud.addEventListener('mousemove', resetHeaderTimer);
+      // Keep header alive while interacting directly with it
+      topHud.addEventListener('mouseenter', () => {
+        if (headerHideTimer) clearTimeout(headerHideTimer);
+      });
+      topHud.addEventListener('mousemove', () => {
+        if (headerHideTimer) clearTimeout(headerHideTimer);
+      });
+      topHud.addEventListener('mouseleave', () => {
+        resetHeaderTimer();
+      });
+
       searchInput.addEventListener('focus', () => {
         if (headerHideTimer) clearTimeout(headerHideTimer);
         showHeader();
       });
-      searchInput.addEventListener('blur', resetHeaderTimer);
+      searchInput.addEventListener('blur', () => {
+        resetHeaderTimer();
+      });
 
       // Touch Devices: Swipe down to reveal header
       let touchStartY = 0;
       let touchStartX = 0;
+      let touchStartTime = 0;
 
       window.addEventListener('touchstart', (e) => {
         if (e.touches && e.touches.length > 0) {
           touchStartY = e.touches[0].clientY;
           touchStartX = e.touches[0].clientX;
+          touchStartTime = Date.now();
         }
       }, { passive: true });
 
@@ -1173,7 +1198,9 @@
         if (e.changedTouches && e.changedTouches.length > 0) {
           const deltaY = e.changedTouches[0].clientY - touchStartY;
           const deltaX = e.changedTouches[0].clientX - touchStartX;
-          if (deltaY > 40 && Math.abs(deltaY) > Math.abs(deltaX)) {
+          const elapsed = Date.now() - touchStartTime;
+          // Downward swipe: > 40px down, predominantly vertical, within 800ms
+          if (deltaY > 40 && Math.abs(deltaY) > Math.abs(deltaX) * 1.2 && elapsed < 800) {
             showHeader();
           }
         }
@@ -1217,7 +1244,12 @@
           targetCamZ = targetZoom * DIVE_DEPTH;
 
           if (targetZoom < 0.1) {
-            resetZoom();
+            activeSectorIdx = null;
+            targetZoom = 0;
+            targetCamX = 0;
+            targetCamY = 0;
+            targetCamZ = 0;
+            document.querySelectorAll('.sector-front-square').forEach(el => el.classList.remove('active-target'));
           } else if (activeSectorIdx !== null) {
             targetCamX = sectorCoords[activeSectorIdx].x;
             targetCamY = sectorCoords[activeSectorIdx].y;
@@ -1314,7 +1346,6 @@
       build3DScene();
       requestAnimationFrame(animationLoop);
       checkSession();
-      resetHeaderTimer();
     })();
   </script>
 </body>
