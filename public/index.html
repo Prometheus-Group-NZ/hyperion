@@ -370,12 +370,12 @@
     /* 1. FRONT LAYER: Square Category Tile (z = 0) */
     .sector-front-square {
       position: absolute;
-      width: 290px;
-      height: 290px;
+      width: 260px;
+      height: 260px;
       transform: translate(-50%, -50%);
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 16px;
+      border-radius: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -415,7 +415,7 @@
 
     .sector-square-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(22px, 2.5vw, 28px);
+      font-size: clamp(20px, 2.2vw, 25px);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -425,8 +425,8 @@
     }
 
     .sector-dot {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       border-radius: 50%;
       flex-shrink: 0;
     }
@@ -444,11 +444,11 @@
     /* 2. DEEP LAYER: 3x3 Project Grid Cluster (z = -480px) */
     .sector-deep-cluster {
       position: absolute;
-      width: 860px;
+      width: 780px;
       transform: translate(-50%, -50%) translateZ(-480px);
       display: grid;
-      grid-template-columns: repeat(3, 270px);
-      gap: 16px;
+      grid-template-columns: repeat(3, 246px);
+      gap: 14px;
       pointer-events: none;
       opacity: 0;
       transform-style: preserve-3d;
@@ -459,21 +459,28 @@
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 20px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 220px;
+      min-height: 190px;
       box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(12px);
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
     .project-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 16px 36px -5px rgba(0, 0, 0, 0.75);
+      transform: translateY(-4px) scale(1.02);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 16px 36px -5px rgba(0, 229, 255, 0.3);
       background: var(--bg-card-hover);
+    }
+
+    .project-card:hover .project-title {
+      color: var(--accent-cyan);
     }
 
     .project-top {
@@ -517,8 +524,7 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      gap: 5px;
-      margin-bottom: 16px;
+      gap: 4px;
     }
 
     .project-title {
@@ -526,6 +532,7 @@
       font-size: 15px;
       font-weight: 600;
       color: #fff;
+      transition: color 0.15s ease;
     }
 
     .project-subdomain {
@@ -539,37 +546,7 @@
       font-size: 12px;
       line-height: 1.45;
       color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    .project-action-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 9px 12px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      color: #fff;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .project-action-btn:hover {
-      background: rgba(0, 229, 255, 0.18);
-      border-color: var(--accent-cyan);
-      color: #fff;
-    }
-
-    .project-action-btn .btn-arrow {
-      color: var(--accent-cyan);
-      transition: transform 0.15s ease;
-    }
-
-    .project-action-btn:hover .btn-arrow {
-      transform: translate(2px, -2px);
+      margin-top: 3px;
     }
 
     .project-card.slot-standby {
@@ -578,6 +555,14 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      cursor: default;
+    }
+
+    .project-card.slot-standby:hover {
+      transform: none;
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
+      background: rgba(14, 20, 28, 0.35);
     }
 
     .slot-standby-inner {
@@ -613,42 +598,14 @@
     .hud-3d-panel {
       position: absolute;
       bottom: 24px;
-      left: 24px;
       right: 24px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 16px;
       pointer-events: none;
       z-index: 50;
       font-family: 'Share Tech Mono', monospace;
-    }
-
-    .hud-target-indicator {
-      background: rgba(6, 9, 12, 0.85);
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 10px 16px;
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12px;
-      letter-spacing: 1px;
-    }
-
-    .target-status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent-cyan);
-      box-shadow: 0 0 8px var(--accent-cyan);
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.85); }
     }
 
     .hud-depth-gauge {
@@ -675,29 +632,6 @@
       height: 100%;
       background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
       transition: width 0.1s ease;
-    }
-
-    .btn-exit-zoom {
-      background: rgba(0, 229, 255, 0.12);
-      border: 1px solid var(--accent-cyan);
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      pointer-events: auto;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-exit-zoom:hover {
-      background: rgba(0, 229, 255, 0.3);
-      box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
-      transform: translateY(-2px);
     }
 
     /* FOOTER */
@@ -795,22 +729,12 @@
 
     <!-- Floating Tactical 3D HUD -->
     <div class="hud-3d-panel">
-      <div class="hud-target-indicator">
-        <span class="target-status-dot"></span>
-        <span id="targetSectorLabel">SPATIAL MATRIX READY // HOVER SECTOR &amp; SCROLL TO DIVE</span>
-      </div>
-      
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <button class="btn-exit-zoom" id="btnExitZoom" style="display: none;">
-          &#8592; RETURN TO 3x3 MATRIX [ESC]
-        </button>
-        <div class="hud-depth-gauge">
-          <span style="color: var(--text-dim); font-size: 11px;">DEPTH</span>
-          <div class="depth-bar-track">
-            <div class="depth-bar-fill" id="depthBarFill"></div>
-          </div>
-          <span id="depthLabel" style="font-size: 11px; color: var(--accent-cyan); min-width: 32px;">0%</span>
+      <div class="hud-depth-gauge">
+        <span style="color: var(--text-dim); font-size: 11px;">DEPTH</span>
+        <div class="depth-bar-track">
+          <div class="depth-bar-fill" id="depthBarFill"></div>
         </div>
+        <span id="depthLabel" style="font-size: 11px; color: var(--accent-cyan); min-width: 32px;">0%</span>
       </div>
     </div>
   </main>
@@ -942,10 +866,8 @@
       const searchInput = document.getElementById('searchInput');
       const spatialViewport = document.getElementById('spatialViewport');
       const space3DScene = document.getElementById('space3DScene');
-      const targetSectorLabel = document.getElementById('targetSectorLabel');
       const depthBarFill = document.getElementById('depthBarFill');
       const depthLabel = document.getElementById('depthLabel');
-      const btnExitZoom = document.getElementById('btnExitZoom');
 
       // Authentication Session Handling
       function checkSession() {
@@ -1045,8 +967,8 @@
       // ======================================================================
       // 3D SPATIAL ENGINE & INTERACTIVE CAMERA
       // ======================================================================
-      const SPACING_X = 350;
-      const SPACING_Y = 350;
+      const SPACING_X = 315;
+      const SPACING_Y = 315;
       const DIVE_DEPTH = 480;
 
       // Calculate 3x3 coordinates for 9 sectors
@@ -1097,7 +1019,6 @@
           frontTile.addEventListener('mouseenter', () => {
             hoveredSectorIdx = idx;
             if (targetZoom < 0.3) {
-              targetSectorLabel.textContent = `TARGET ACQUIRED // SECTOR 0${idx + 1}: ${sector.title.toUpperCase()} [SCROLL TO DIVE]`;
               frontTile.classList.add('active-target');
             }
           });
@@ -1106,9 +1027,6 @@
             if (hoveredSectorIdx === idx) {
               hoveredSectorIdx = null;
               frontTile.classList.remove('active-target');
-              if (targetZoom < 0.1) {
-                targetSectorLabel.textContent = 'SPATIAL MATRIX READY // HOVER SECTOR & SCROLL TO DIVE';
-              }
             }
           });
 
@@ -1121,32 +1039,29 @@
           deepCluster.className = 'sector-deep-cluster';
           deepCluster.id = `deepCluster_${idx}`;
 
-          // Populate project cards inside deep cluster
+          // Populate project cards inside deep cluster (Clicking card directly opens tool)
           let cardCount = 0;
           sector.projects.forEach((proj, pIdx) => {
             cardCount++;
             const slotNum = String(pIdx + 1).padStart(2, '0');
-            const pCard = document.createElement('div');
+            const pCard = document.createElement('a');
             pCard.className = 'project-card';
+            pCard.href = proj.url;
+            pCard.target = '_blank';
+            pCard.rel = 'noopener';
             pCard.innerHTML = `
-              <div>
-                <div class="project-top">
-                  <div class="project-id-tag">
-                    <span class="project-live-indicator"></span>
-                    <span>NODE // ${slotNum}</span>
-                  </div>
-                  <span class="port-pill">${proj.port}</span>
+              <div class="project-top">
+                <div class="project-id-tag">
+                  <span class="project-live-indicator"></span>
+                  <span>NODE // ${slotNum}</span>
                 </div>
-                <div class="project-body">
-                  <h3 class="project-title">${proj.title}</h3>
-                  <div class="project-subdomain">${proj.subdomain}</div>
-                  <p class="project-desc">${proj.desc}</p>
-                </div>
+                <span class="port-pill">${proj.port}</span>
               </div>
-              <a href="${proj.url}" target="_blank" rel="noopener" class="project-action-btn">
-                <span>LAUNCH INGRESS</span>
-                <span class="btn-arrow">&#8599;</span>
-              </a>
+              <div class="project-body">
+                <h3 class="project-title">${proj.title}</h3>
+                <div class="project-subdomain">${proj.subdomain}</div>
+                <p class="project-desc">${proj.desc}</p>
+              </div>
             `;
             deepCluster.appendChild(pCard);
           });
@@ -1179,8 +1094,6 @@
         targetCamX = sectorCoords[idx].x;
         targetCamY = sectorCoords[idx].y;
         targetCamZ = DIVE_DEPTH;
-        targetSectorLabel.textContent = `DOCKED // SECTOR 0${idx + 1}: ${SECTOR_REGISTRY[idx].title.toUpperCase()} // 3x3 CLUSTER ACTIVE`;
-        btnExitZoom.style.display = 'inline-flex';
       }
 
       function resetZoom() {
@@ -1189,17 +1102,15 @@
         targetCamX = 0;
         targetCamY = 0;
         targetCamZ = 0;
-        targetSectorLabel.textContent = 'SPATIAL MATRIX READY // HOVER SECTOR & SCROLL TO DIVE';
-        btnExitZoom.style.display = 'none';
         document.querySelectorAll('.sector-front-square').forEach(el => el.classList.remove('active-target'));
       }
 
-      btnExitZoom.addEventListener('click', resetZoom);
-
-      // Keyboard navigation (ESC returns to 3x3 matrix)
+      // Keyboard navigation (ESC at any point returns to landing matrix)
       window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' || (e.key === 'Backspace' && targetZoom > 0.2 && document.activeElement !== searchInput)) {
+        if (e.key === 'Escape') {
           resetZoom();
+          if (document.activeElement) document.activeElement.blur();
+          searchInput.value = '';
         }
       });
 
@@ -1225,8 +1136,6 @@
           targetCamX = sectorCoords[activeSectorIdx].x;
           targetCamY = sectorCoords[activeSectorIdx].y;
           targetCamZ = targetZoom * DIVE_DEPTH;
-
-          targetSectorLabel.textContent = `DIVING // SECTOR 0${activeSectorIdx + 1}: ${SECTOR_REGISTRY[activeSectorIdx].title.toUpperCase()}`;
         } else {
           // SCROLL DOWN / ZOOM OUT
           targetZoom = Math.max(0.0, targetZoom - zoomSpeed);
@@ -1296,12 +1205,6 @@
         const pct = Math.round(zoomProgress * 100);
         depthBarFill.style.width = `${pct}%`;
         depthLabel.textContent = `${pct}%`;
-
-        if (zoomProgress > 0.45) {
-          btnExitZoom.style.display = 'inline-flex';
-        } else if (targetZoom === 0 && zoomProgress < 0.1) {
-          btnExitZoom.style.display = 'none';
-        }
 
         // Cross-fade front square tiles and deep clusters based on camera proximity
         SECTOR_REGISTRY.forEach((_, idx) => {
