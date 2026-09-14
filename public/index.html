@@ -796,6 +796,7 @@
           title: 'Intel',
           dotClass: 'dot-intel',
           projects: [
+            { title: 'ADS-B Radar & SIGINT SDR', subdomain: 'adsb.prometheus.nz', url: 'https://adsb.prometheus.nz', port: ':1090', desc: 'Real-time 1090MHz Mode-S ADS-B aircraft radar & dynamic multi-band SDR spectrum switchboard.' },
             { title: 'Halo Wireless SIGINT', subdomain: 'halo.prometheus.nz', url: 'https://halo.prometheus.nz', port: ':2501', desc: 'Distributed wireless sensor array, packet capture and RF telemetry.' },
             { title: 'Military Tactical Ops', subdomain: 'military.prometheus.nz', url: 'https://military.prometheus.nz', port: ':5000', desc: 'Tactical command, geofencing, and strategic node tracking.' }
           ]
@@ -1125,11 +1126,11 @@
       let headerHideTimer = null;
       const AUTO_HIDE_MS = 5000;
 
-      function hideHeader() {
-        // If user is actively typing in search, don't hide
-        if (document.activeElement === searchInput && searchInput.value.trim().length > 0) return;
+      function hideHeader(force = false) {
+        // If user is actively typing in search, don't auto-hide unless explicitly forced (e.g. clicking off header)
+        if (!force && document.activeElement === searchInput && searchInput.value.trim().length > 0) return;
 
-        // If search input is focused but empty, blur it cleanly
+        // If search input is focused, blur it cleanly
         if (document.activeElement === searchInput) {
           searchInput.blur();
         }
@@ -1152,14 +1153,26 @@
         if (headerHideTimer) clearTimeout(headerHideTimer);
         // Only run auto-hide timer if session is unlocked
         if (authOverlay && authOverlay.classList.contains('hidden')) {
-          headerHideTimer = setTimeout(hideHeader, AUTO_HIDE_MS);
+          headerHideTimer = setTimeout(() => hideHeader(false), AUTO_HIDE_MS);
         }
       }
 
       // Desktop Macron Button: Click to reveal header
+      btnHeaderMacron.addEventListener('pointerdown', (e) => {
+        e.stopPropagation();
+      });
       btnHeaderMacron.addEventListener('click', (e) => {
         e.stopPropagation();
         showHeader();
+      });
+
+      // Click off page header to dismiss it immediately
+      document.addEventListener('pointerdown', (e) => {
+        if (!topHud.classList.contains('header-hidden')) {
+          if (!topHud.contains(e.target) && !btnHeaderMacron.contains(e.target)) {
+            hideHeader(true);
+          }
+        }
       });
 
       // Keep header alive while interacting directly with it

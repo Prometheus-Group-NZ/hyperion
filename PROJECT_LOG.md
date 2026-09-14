@@ -21,3 +21,4 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 13: Reduce 3D card scale by 10%, convert level-2 cards into full clickable anchors (remove launch buttons), remove HUD status text and return button, enforce global ESC key reset.
 - [x] Task 14: Remove lower footer, implement verified 5-second auto-hide top header with click-to-toggle desktop macron tab and touch swipe-down trigger.
 - [x] Task 15: Fix header auto-hide timer collision, remove focus trap in unlockUI, remove accidental mouseenter trigger on macron button, and verify E2E 5s auto-hide loop.
+- [x] Task 16: Allow clicking off the page header to immediately hide it, with verified E2E pointerdown assertion.
