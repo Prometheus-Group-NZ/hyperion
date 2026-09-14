@@ -13,10 +13,10 @@
     :root {
       --bg-base: #06090c;
       --bg-surface: #0c1017;
-      --bg-card: rgba(14, 20, 28, 0.85);
-      --bg-card-hover: rgba(22, 32, 45, 0.95);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-active: rgba(0, 255, 102, 0.35);
+      --bg-card: rgba(14, 20, 28, 0.88);
+      --bg-card-hover: rgba(22, 32, 45, 0.96);
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --border-active: rgba(0, 255, 102, 0.4);
       
       --accent-green: #00ff66;
       --accent-cyan: #00e5ff;
@@ -44,14 +44,14 @@
       background-color: var(--bg-base);
       color: var(--text-main);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      min-height: 100vh;
-      min-height: 100dvh;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
+      overflow: hidden;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.05) 0%, transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(0, 255, 102, 0.03) 0%, transparent 50%);
+        radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.06) 0%, transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(0, 255, 102, 0.04) 0%, transparent 50%);
     }
 
     /* ==========================================================================
@@ -216,28 +216,20 @@
     }
 
     /* ==========================================================================
-       APP SHELL & TOP HUD
+       TOP HUD & CONTROLS
        ========================================================================== */
-    .app-shell {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      max-width: 1440px;
-      width: 100%;
-      margin: 0 auto;
-      padding: clamp(16px, 3vw, 32px);
-      box-sizing: border-box;
-      gap: 24px;
-    }
-
     .top-hud {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding-bottom: 20px;
+      padding: 16px 24px;
       border-bottom: 1px solid var(--border-subtle);
+      background: rgba(6, 9, 12, 0.95);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      flex-shrink: 0;
     }
 
     .brand-section {
@@ -263,7 +255,7 @@
 
     .brand-text h1 {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(16px, 3vw, 20px);
+      font-size: clamp(16px, 2.5vw, 18px);
       font-weight: 700;
       letter-spacing: 2px;
       color: #fff;
@@ -282,7 +274,7 @@
       align-items: center;
       gap: 12px;
       flex: 1;
-      max-width: 560px;
+      max-width: 540px;
       justify-content: flex-end;
     }
 
@@ -306,7 +298,7 @@
     }
 
     .search-box input:focus {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.08);
       border-color: var(--accent-cyan);
       box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
     }
@@ -343,149 +335,93 @@
       color: #fff;
     }
 
-    /* Subview Navigation Breadcrumb Bar */
-    .view-breadcrumb-bar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 12px 18px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      font-family: 'Share Tech Mono', monospace;
-    }
-
-    .breadcrumb-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-nav-back {
-      background: rgba(0, 229, 255, 0.08);
-      border: 1px solid rgba(0, 229, 255, 0.3);
-      color: var(--accent-cyan);
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .btn-nav-back:hover {
-      background: rgba(0, 229, 255, 0.2);
-      border-color: var(--accent-cyan);
-      color: #fff;
-      transform: translateX(-2px);
-    }
-
-    .breadcrumb-path {
-      font-size: 13px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .breadcrumb-path .active-sector {
-      color: #fff;
-      font-weight: 700;
-    }
-
-    .breadcrumb-meta {
-      font-size: 11px;
-      color: var(--text-dim);
-      letter-spacing: 1px;
-    }
-
     /* ==========================================================================
-       3x3 GRID SYSTEM (APPLIED TO BOTH LANDING CATEGORIES & PROJECT SUBVIEW)
+       DYNAMIC 3D SPATIAL VIEWPORT
        ========================================================================== */
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    .spatial-viewport-3d {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      overflow: hidden;
+      perspective: 1100px;
+      perspective-origin: 50% 50%;
+      user-select: none;
+      cursor: default;
     }
 
-    @media (max-width: 1120px) {
-      .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    .space-3d-scene {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
 
-    @media (max-width: 680px) {
-      .grid-container {
-        grid-template-columns: 1fr;
-      }
+    /* Sector Group (Anchor in 3D Space) */
+    .sector-space-node {
+      position: absolute;
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
     }
 
-    /* ==========================================================================
-       LANDING PAGE: 9 CATEGORY ENTRY CARDS
-       ========================================================================== */
-    .category-entry-card {
+    /* 1. FRONT LAYER: Square Category Tile (z = 0) */
+    .sector-front-square {
+      position: absolute;
+      width: 290px;
+      height: 290px;
+      transform: translate(-50%, -50%);
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      aspect-ratio: 1 / 1;
-      width: 100%;
+      border-radius: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 16px;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
       cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-      padding: 24px;
-      box-sizing: border-box;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      transform-style: preserve-3d;
     }
 
-    .category-entry-card:hover {
-      transform: translateY(-4px) scale(1.02);
-      border-color: rgba(255, 255, 255, 0.3);
-      background: var(--bg-card-hover);
-      box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.7);
-    }
-
-    .category-entry-card.sector-ai:hover { border-color: rgba(56, 189, 248, 0.6); box-shadow: 0 16px 36px -6px rgba(56, 189, 248, 0.25); }
-    .category-entry-card.sector-security:hover { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 16px 36px -6px rgba(239, 68, 68, 0.25); }
-    .category-entry-card.sector-intel:hover { border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 16px 36px -6px rgba(245, 158, 11, 0.25); }
-    .category-entry-card.sector-fleet:hover { border-color: rgba(16, 185, 129, 0.6); box-shadow: 0 16px 36px -6px rgba(16, 185, 129, 0.25); }
-    .category-entry-card.sector-games:hover { border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 16px 36px -6px rgba(168, 85, 247, 0.25); }
-    .category-entry-card.sector-science:hover { border-color: rgba(6, 182, 212, 0.6); box-shadow: 0 16px 36px -6px rgba(6, 182, 212, 0.25); }
-    .category-entry-card.sector-social:hover { border-color: rgba(236, 72, 153, 0.6); box-shadow: 0 16px 36px -6px rgba(236, 72, 153, 0.25); }
-    .category-entry-card.sector-technology:hover { border-color: rgba(234, 179, 8, 0.6); box-shadow: 0 16px 36px -6px rgba(234, 179, 8, 0.25); }
-
-    .category-entry-card.standby {
-      border: 1px dashed rgba(255, 255, 255, 0.15);
-      background: rgba(14, 20, 28, 0.4);
-    }
-    .category-entry-card.standby:hover {
+    .sector-front-square:hover {
       border-color: rgba(255, 255, 255, 0.35);
-      box-shadow: 0 16px 36px -6px rgba(100, 116, 139, 0.2);
+      background: var(--bg-card-hover);
+      box-shadow: 0 16px 40px -5px rgba(0, 0, 0, 0.75);
+    }
+
+    .sector-front-square.active-target {
+      border-color: var(--accent-cyan) !important;
+      box-shadow: 0 0 35px rgba(0, 229, 255, 0.4) !important;
+    }
+
+    .sector-front-square.sector-ai:hover { border-color: rgba(56, 189, 248, 0.6); box-shadow: 0 0 30px rgba(56, 189, 248, 0.25); }
+    .sector-front-square.sector-security:hover { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 30px rgba(239, 68, 68, 0.25); }
+    .sector-front-square.sector-intel:hover { border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 0 30px rgba(245, 158, 11, 0.25); }
+    .sector-front-square.sector-fleet:hover { border-color: rgba(16, 185, 129, 0.6); box-shadow: 0 0 30px rgba(16, 185, 129, 0.25); }
+    .sector-front-square.sector-games:hover { border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 0 30px rgba(168, 85, 247, 0.25); }
+    .sector-front-square.sector-science:hover { border-color: rgba(6, 182, 212, 0.6); box-shadow: 0 0 30px rgba(6, 182, 212, 0.25); }
+    .sector-front-square.sector-social:hover { border-color: rgba(236, 72, 153, 0.6); box-shadow: 0 0 30px rgba(236, 72, 153, 0.25); }
+    .sector-front-square.sector-technology:hover { border-color: rgba(234, 179, 8, 0.6); box-shadow: 0 0 30px rgba(234, 179, 8, 0.25); }
+
+    .sector-front-square.standby {
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      background: rgba(14, 20, 28, 0.45);
     }
 
     .sector-square-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(20px, 2.4vw, 28px);
+      font-size: clamp(22px, 2.5vw, 28px);
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #fff;
       text-align: center;
       margin: 0;
-      user-select: none;
     }
 
     .sector-dot {
@@ -495,38 +431,48 @@
       flex-shrink: 0;
     }
 
-    .dot-ai { background: #38bdf8; box-shadow: 0 0 12px #38bdf8; }
-    .dot-sec { background: #ef4444; box-shadow: 0 0 12px #ef4444; }
-    .dot-intel { background: #f59e0b; box-shadow: 0 0 12px #f59e0b; }
-    .dot-fleet { background: #10b981; box-shadow: 0 0 12px #10b981; }
-    .dot-games { background: #a855f7; box-shadow: 0 0 12px #a855f7; }
-    .dot-sci { background: #06b6d4; box-shadow: 0 0 12px #06b6d4; }
-    .dot-soc { background: #ec4899; box-shadow: 0 0 12px #ec4899; }
-    .dot-tech { background: #eab308; box-shadow: 0 0 12px #eab308; }
+    .dot-ai { background: #38bdf8; box-shadow: 0 0 14px #38bdf8; }
+    .dot-sec { background: #ef4444; box-shadow: 0 0 14px #ef4444; }
+    .dot-intel { background: #f59e0b; box-shadow: 0 0 14px #f59e0b; }
+    .dot-fleet { background: #10b981; box-shadow: 0 0 14px #10b981; }
+    .dot-games { background: #a855f7; box-shadow: 0 0 14px #a855f7; }
+    .dot-sci { background: #06b6d4; box-shadow: 0 0 14px #06b6d4; }
+    .dot-soc { background: #ec4899; box-shadow: 0 0 14px #ec4899; }
+    .dot-tech { background: #eab308; box-shadow: 0 0 14px #eab308; }
     .dot-standby { background: #64748b; box-shadow: 0 0 10px #64748b; }
 
-    /* ==========================================================================
-       SUBVIEW: 3x3 DEDICATED PROJECT CARDS (1 CARD PER PROJECT)
-       ========================================================================== */
+    /* 2. DEEP LAYER: 3x3 Project Grid Cluster (z = -480px) */
+    .sector-deep-cluster {
+      position: absolute;
+      width: 860px;
+      transform: translate(-50%, -50%) translateZ(-480px);
+      display: grid;
+      grid-template-columns: repeat(3, 270px);
+      gap: 16px;
+      pointer-events: none;
+      opacity: 0;
+      transform-style: preserve-3d;
+      transition: opacity 0.2s ease;
+    }
+
     .project-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 22px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       min-height: 220px;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .project-card:hover {
       transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 16px 36px -5px rgba(0, 0, 0, 0.75);
       background: var(--bg-card-hover);
     }
 
@@ -535,8 +481,8 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding-bottom: 12px;
-      margin-bottom: 14px;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .project-id-tag {
@@ -571,13 +517,13 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-bottom: 18px;
+      gap: 5px;
+      margin-bottom: 16px;
     }
 
     .project-title {
       font-family: 'Inter', sans-serif;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
       color: #fff;
     }
@@ -591,17 +537,17 @@
 
     .project-desc {
       font-size: 12px;
-      line-height: 1.5;
+      line-height: 1.45;
       color: var(--text-muted);
-      margin-top: 4px;
+      margin-top: 2px;
     }
 
     .project-action-btn {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.03);
+      padding: 9px 12px;
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 8px;
       color: #fff;
@@ -612,7 +558,7 @@
     }
 
     .project-action-btn:hover {
-      background: rgba(0, 229, 255, 0.15);
+      background: rgba(0, 229, 255, 0.18);
       border-color: var(--accent-cyan);
       color: #fff;
     }
@@ -626,7 +572,6 @@
       transform: translate(2px, -2px);
     }
 
-    /* Standby slots inside 3x3 subview */
     .project-card.slot-standby {
       border: 1px dashed rgba(255, 255, 255, 0.12);
       background: rgba(14, 20, 28, 0.35);
@@ -639,11 +584,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .slot-icon {
-      font-size: 22px;
+      font-size: 20px;
       color: var(--text-dim);
       opacity: 0.5;
     }
@@ -663,11 +608,101 @@
     }
 
     /* ==========================================================================
-       FOOTER
+       TACTICAL 3D HUD OVERLAYS & CONTROLS
        ========================================================================== */
+    .hud-3d-panel {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      pointer-events: none;
+      z-index: 50;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .hud-target-indicator {
+      background: rgba(6, 9, 12, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 16px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .target-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    .hud-depth-gauge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(6, 9, 12, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .depth-bar-track {
+      width: 100px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .depth-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+      transition: width 0.1s ease;
+    }
+
+    .btn-exit-zoom {
+      background: rgba(0, 229, 255, 0.12);
+      border: 1px solid var(--accent-cyan);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-exit-zoom:hover {
+      background: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* FOOTER */
     footer.bottom-bar {
-      margin-top: auto;
-      padding: 16px 20px;
+      padding: 14px 24px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -677,6 +712,9 @@
       font-size: 11px;
       color: var(--text-dim);
       border-top: 1px solid var(--border-subtle);
+      background: rgba(6, 9, 12, 0.95);
+      z-index: 100;
+      flex-shrink: 0;
     }
 
     .footer-left {
@@ -729,65 +767,71 @@
   </div>
 
   <!-- ========================================================================
-       MAIN HYPERION APPLICATION SHELL
+       MAIN HYPERION 3D LAUNCHPAD INTERFACE
        ======================================================================== -->
-  <div class="app-shell" id="mainApp">
-    <header class="top-hud">
-      <div class="brand-section">
-        <div class="brand-symbol">&#9650;</div>
-        <div class="brand-text">
-          <h1 id="hudBrandTitle">HYPERION</h1>
-          <p id="hudBrandSubtitle">PROMETHEUS FLEET LAUNCHPAD // 9 SECTORS // 25 INGRESS NODES</p>
+  <header class="top-hud">
+    <div class="brand-section">
+      <div class="brand-symbol">&#9650;</div>
+      <div class="brand-text">
+        <h1 id="hudBrandTitle">HYPERION</h1>
+        <p id="hudBrandSubtitle">PROMETHEUS FLEET LAUNCHPAD // 3D SPATIAL DIVE MATRIX</p>
+      </div>
+    </div>
+
+    <div class="hud-controls">
+      <div class="search-box">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" id="searchInput" placeholder="Search node, tool or sector (auto-dives)..." autocomplete="off">
+      </div>
+      <button class="btn-lock" id="btnLockSession" title="Lock Session">&#128274; LOCK</button>
+    </div>
+  </header>
+
+  <!-- Dynamic 3D Spatial Viewport -->
+  <main class="spatial-viewport-3d" id="spatialViewport">
+    <div class="space-3d-scene" id="space3DScene">
+      <!-- 9 Sectors positioned dynamically in 3D -->
+    </div>
+
+    <!-- Floating Tactical 3D HUD -->
+    <div class="hud-3d-panel">
+      <div class="hud-target-indicator">
+        <span class="target-status-dot"></span>
+        <span id="targetSectorLabel">SPATIAL MATRIX READY // HOVER SECTOR &amp; SCROLL TO DIVE</span>
+      </div>
+      
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="btn-exit-zoom" id="btnExitZoom" style="display: none;">
+          &#8592; RETURN TO 3x3 MATRIX [ESC]
+        </button>
+        <div class="hud-depth-gauge">
+          <span style="color: var(--text-dim); font-size: 11px;">DEPTH</span>
+          <div class="depth-bar-track">
+            <div class="depth-bar-fill" id="depthBarFill"></div>
+          </div>
+          <span id="depthLabel" style="font-size: 11px; color: var(--accent-cyan); min-width: 32px;">0%</span>
         </div>
       </div>
+    </div>
+  </main>
 
-      <div class="hud-controls">
-        <div class="search-box">
-          <span class="search-icon">&#128269;</span>
-          <input type="text" id="searchInput" placeholder="Filter nodes, subdomains, sectors..." autocomplete="off">
-        </div>
-        <button class="btn-lock" id="btnLockSession" title="Lock Session">&#128274; LOCK</button>
-      </div>
-    </header>
-
-    <!-- Subview Breadcrumb Bar (Visible in Category View) -->
-    <nav class="view-breadcrumb-bar" id="subviewBreadcrumb" style="display: none;">
-      <div class="breadcrumb-left">
-        <button class="btn-nav-back" id="btnBackToMatrix">&#8592; FLEET MATRIX</button>
-        <div class="breadcrumb-path">
-          <span>HYPERION</span>
-          <span>/</span>
-          <span>SECTORS</span>
-          <span>/</span>
-          <span class="active-sector" id="breadcrumbSectorName">AI</span>
-        </div>
-      </div>
-      <div class="breadcrumb-meta" id="breadcrumbSectorMeta">3x3 TACTICAL GRID // 4 NODES ALLOCATED</div>
-    </nav>
-
-    <!-- Primary Grid View Container (3x3) -->
-    <main class="grid-container" id="gridContainer">
-      <!-- Dynamically populated by renderCurrentView() -->
-    </main>
-
-    <footer class="bottom-bar">
-      <div class="footer-left">
-        <span class="footer-stat"><span class="status-live-dot"></span> PROMETHEUS MESH ONLINE</span>
-        <span>ZONE: prometheus.nz</span>
-      </div>
-      <div>HYPERION // CLOUDFLARE PAGES EDGE DEPLOYMENT</div>
-    </footer>
-  </div>
+  <footer class="bottom-bar">
+    <div class="footer-left">
+      <span class="footer-stat"><span class="status-live-dot"></span> PROMETHEUS MESH ONLINE</span>
+      <span>ZONE: prometheus.nz</span>
+    </div>
+    <div>HYPERION // 3D SPATIAL ZOOM LAUNCHPAD</div>
+  </footer>
 
   <script>
     (function () {
-      // Configuration & Default Unlock PINs
+      // Configuration & Unlock PINs
       const VALID_PINS = ['111111', '1111'];
       const SESSION_KEY = 'hyperion_auth_session';
       const EXPIRY_KEY = 'hyperion_auth_expiry';
 
       // ======================================================================
-      // FLEET REGISTRY: 9 CATEGORIES & 25 DISTRIBUTED INGRESS NODES
+      // 9 SECTOR REGISTRY WITH DEDICATED CHILD INGRESS NODES
       // ======================================================================
       const SECTOR_REGISTRY = [
         {
@@ -795,40 +839,11 @@
           index: '01',
           title: 'AI',
           dotClass: 'dot-ai',
-          summary: 'Autonomous agent runtimes, neural voice duplex bridges & cognitive IDE interfaces.',
           projects: [
-            {
-              title: 'Antigravity IDE',
-              subdomain: 'antigravity.prometheus.nz',
-              url: 'https://antigravity.prometheus.nz',
-              port: ':3000',
-              desc: 'Advanced agentic IDE and autonomous coding command hub.',
-              search: 'antigravity ide agent command center 3000'
-            },
-            {
-              title: 'OpenCode Runtime',
-              subdomain: 'opencode.prometheus.nz',
-              url: 'https://opencode.prometheus.nz',
-              port: ':8080',
-              desc: 'Distributed headless execution runtime and sandbox environment.',
-              search: 'opencode remote runtime agent 8080'
-            },
-            {
-              title: 'Iris Duplex Voice',
-              subdomain: 'iris.prometheus.nz',
-              url: 'https://iris.prometheus.nz',
-              port: ':3000',
-              desc: 'Real-time bidirectional neural voice bridge and speech telemetry.',
-              search: 'iris pc orchestrator duplex voice bridge 3000'
-            },
-            {
-              title: 'Lyra Orchestrator',
-              subdomain: 'lyra.prometheus.nz',
-              url: 'https://lyra.prometheus.nz',
-              port: ':8000',
-              desc: 'Multi-modal model routing and context memory manager.',
-              search: 'lyra multi-modal voice orchestrator 8000'
-            }
+            { title: 'Antigravity IDE', subdomain: 'antigravity.prometheus.nz', url: 'https://antigravity.prometheus.nz', port: ':3000', desc: 'Advanced agentic IDE and autonomous coding command hub.' },
+            { title: 'OpenCode Runtime', subdomain: 'opencode.prometheus.nz', url: 'https://opencode.prometheus.nz', port: ':8080', desc: 'Distributed headless execution runtime and sandbox environment.' },
+            { title: 'Iris Duplex Voice', subdomain: 'iris.prometheus.nz', url: 'https://iris.prometheus.nz', port: ':3000', desc: 'Real-time bidirectional neural voice bridge and speech telemetry.' },
+            { title: 'Lyra Orchestrator', subdomain: 'lyra.prometheus.nz', url: 'https://lyra.prometheus.nz', port: ':8000', desc: 'Multi-modal model routing and context memory manager.' }
           ]
         },
         {
@@ -836,32 +851,10 @@
           index: '02',
           title: 'Security',
           dotClass: 'dot-sec',
-          summary: 'Central perimeter defense, telemetry gateways, and incident sirens.',
           projects: [
-            {
-              title: 'Security Intelligence Hub',
-              subdomain: 'security.prometheus.nz',
-              url: 'https://security.prometheus.nz',
-              port: ':5000',
-              desc: 'Global threat monitoring and automated perimeter firewall rules.',
-              search: 'security defense intelligence hub 5000'
-            },
-            {
-              title: 'Heimdall Gateway',
-              subdomain: 'heimdall.prometheus.nz',
-              url: 'https://heimdall.prometheus.nz',
-              port: ':5000',
-              desc: 'Unified authentication ingress proxy and access management.',
-              search: 'heimdall dashboard portal gateway 5000'
-            },
-            {
-              title: 'Siren Alerts',
-              subdomain: 'alerts.prometheus.nz',
-              url: 'https://alerts.prometheus.nz',
-              port: 'SIREN',
-              desc: 'Emergency broadcast system and push alert notification daemon.',
-              search: 'alerts siren remote telemetry emergency incident'
-            }
+            { title: 'Security Intelligence Hub', subdomain: 'security.prometheus.nz', url: 'https://security.prometheus.nz', port: ':5000', desc: 'Global threat monitoring and automated perimeter firewall rules.' },
+            { title: 'Heimdall Gateway', subdomain: 'heimdall.prometheus.nz', url: 'https://heimdall.prometheus.nz', port: ':5000', desc: 'Unified authentication ingress proxy and access management.' },
+            { title: 'Siren Alerts', subdomain: 'alerts.prometheus.nz', url: 'https://alerts.prometheus.nz', port: 'SIREN', desc: 'Emergency broadcast system and push alert notification daemon.' }
           ]
         },
         {
@@ -869,24 +862,9 @@
           index: '03',
           title: 'Intel',
           dotClass: 'dot-intel',
-          summary: 'Signals intelligence, RF spectrum monitoring, and tactical tracking.',
           projects: [
-            {
-              title: 'Halo Wireless SIGINT',
-              subdomain: 'halo.prometheus.nz',
-              url: 'https://halo.prometheus.nz',
-              port: ':2501',
-              desc: 'Distributed wireless sensor array, packet capture and RF telemetry.',
-              search: 'halo wireless sensor array kismet sigint 2501'
-            },
-            {
-              title: 'Military Tactical Ops',
-              subdomain: 'military.prometheus.nz',
-              url: 'https://military.prometheus.nz',
-              port: ':5000',
-              desc: 'Tactical command, geofencing, and strategic node tracking.',
-              search: 'military tactical operations command defense 5000'
-            }
+            { title: 'Halo Wireless SIGINT', subdomain: 'halo.prometheus.nz', url: 'https://halo.prometheus.nz', port: ':2501', desc: 'Distributed wireless sensor array, packet capture and RF telemetry.' },
+            { title: 'Military Tactical Ops', subdomain: 'military.prometheus.nz', url: 'https://military.prometheus.nz', port: ':5000', desc: 'Tactical command, geofencing, and strategic node tracking.' }
           ]
         },
         {
@@ -894,40 +872,11 @@
           index: '04',
           title: 'Fleet',
           dotClass: 'dot-fleet',
-          summary: 'Universal fleet management, virtual hypervisors, routing and peripheral spoolers.',
           projects: [
-            {
-              title: 'Arachne Fleet Manager',
-              subdomain: 'arachne.prometheus.nz',
-              url: 'https://arachne.prometheus.nz',
-              port: ':5000',
-              desc: 'Autonomous telemetry agent, node orchestration and mesh sync.',
-              search: 'arachne universal fleet manager telemetry ct 110 5000'
-            },
-            {
-              title: 'Proxmox Hypervisor',
-              subdomain: 'server.prometheus.nz',
-              url: 'https://server.prometheus.nz',
-              port: ':8006',
-              desc: 'Cluster virtualization engine, VM/LXC compute and storage control.',
-              search: 'server proxmox pve hypervisor 8006'
-            },
-            {
-              title: 'Core Gateway Router',
-              subdomain: 'admin.prometheus.nz',
-              url: 'https://admin.prometheus.nz',
-              port: ':80',
-              desc: 'Core gateway routing, DNS resolver and LAN traffic control.',
-              search: 'admin core lan gateway router 80'
-            },
-            {
-              title: 'CUPS Print Spooler',
-              subdomain: 'printers.prometheus.nz',
-              url: 'https://printers.prometheus.nz',
-              port: ':631',
-              desc: 'Network print spooler daemon and document dispatch queue.',
-              search: 'printers print management hub cups network spooler 631'
-            }
+            { title: 'Arachne Fleet Manager', subdomain: 'arachne.prometheus.nz', url: 'https://arachne.prometheus.nz', port: ':5000', desc: 'Autonomous telemetry agent, node orchestration and mesh sync.' },
+            { title: 'Proxmox Hypervisor', subdomain: 'server.prometheus.nz', url: 'https://server.prometheus.nz', port: ':8006', desc: 'Cluster virtualization engine, VM/LXC compute and storage control.' },
+            { title: 'Core Gateway Router', subdomain: 'admin.prometheus.nz', url: 'https://admin.prometheus.nz', port: ':80', desc: 'Core gateway routing, DNS resolver and LAN traffic control.' },
+            { title: 'CUPS Print Spooler', subdomain: 'printers.prometheus.nz', url: 'https://printers.prometheus.nz', port: ':631', desc: 'Network print spooler daemon and document dispatch queue.' }
           ]
         },
         {
@@ -935,32 +884,10 @@
           index: '05',
           title: 'Games',
           dotClass: 'dot-games',
-          summary: 'Interactive simulation clusters, virtual reality nodes, and 3D spatial engines.',
           projects: [
-            {
-              title: 'Games Cluster',
-              subdomain: 'games.prometheus.nz',
-              url: 'https://games.prometheus.nz',
-              port: ':5000',
-              desc: 'Interactive gaming host, high-throughput render stream and state store.',
-              search: 'games interactive gaming cluster entertainment 5000'
-            },
-            {
-              title: 'Simulation Engine',
-              subdomain: 'simulation.prometheus.nz',
-              url: 'https://simulation.prometheus.nz',
-              port: ':5000',
-              desc: 'Physics modeling, procedural generation and world state computing.',
-              search: 'simulation virtual modeling engine 5000'
-            },
-            {
-              title: 'Virtual Reality Node',
-              subdomain: 'virtualreality.prometheus.nz',
-              url: 'https://virtualreality.prometheus.nz',
-              port: ':5000',
-              desc: 'Spatial computing gateway, WebXR bridge and immersive viewports.',
-              search: 'virtualreality vr immersive spatial node 5000'
-            }
+            { title: 'Games Cluster', subdomain: 'games.prometheus.nz', url: 'https://games.prometheus.nz', port: ':5000', desc: 'Interactive gaming host, high-throughput render stream and state store.' },
+            { title: 'Simulation Engine', subdomain: 'simulation.prometheus.nz', url: 'https://simulation.prometheus.nz', port: ':5000', desc: 'Physics modeling, procedural generation and world state computing.' },
+            { title: 'Virtual Reality Node', subdomain: 'virtualreality.prometheus.nz', url: 'https://virtualreality.prometheus.nz', port: ':5000', desc: 'Spatial computing gateway, WebXR bridge and immersive viewports.' }
           ]
         },
         {
@@ -968,24 +895,9 @@
           index: '06',
           title: 'Science',
           dotClass: 'dot-sci',
-          summary: 'Genetic exploration, bioinformatics, laboratory telemetry and scientific datasets.',
           projects: [
-            {
-              title: 'Science Lab',
-              subdomain: 'science.prometheus.nz',
-              url: 'https://science.prometheus.nz',
-              port: ':5000',
-              desc: 'Central laboratory environment, scientific computing and data logging.',
-              search: 'science research laboratory environment 5000'
-            },
-            {
-              title: 'DNA Browser',
-              subdomain: 'dna.prometheus.nz',
-              url: 'https://dna.prometheus.nz',
-              port: 'DNA',
-              desc: 'Genomic sequence analysis, nucleotide mapping and genetic explorer.',
-              search: 'dna browser genetic explorer research'
-            }
+            { title: 'Science Lab', subdomain: 'science.prometheus.nz', url: 'https://science.prometheus.nz', port: ':5000', desc: 'Central laboratory environment, scientific computing and data logging.' },
+            { title: 'DNA Browser', subdomain: 'dna.prometheus.nz', url: 'https://dna.prometheus.nz', port: 'DNA', desc: 'Genomic sequence analysis, nucleotide mapping and genetic explorer.' }
           ]
         },
         {
@@ -993,32 +905,10 @@
           index: '07',
           title: 'Social',
           dotClass: 'dot-soc',
-          summary: 'Shared family portals, financial ledger analytics, and cognitive tracking.',
           projects: [
-            {
-              title: 'Family Portal',
-              subdomain: 'family.prometheus.nz',
-              url: 'https://family.prometheus.nz',
-              port: ':5000',
-              desc: 'Shared ecosystem portal, family calendar, tasks and home automation.',
-              search: 'family portal shared services community 5000'
-            },
-            {
-              title: 'Finance Analytics',
-              subdomain: 'finance.prometheus.nz',
-              url: 'https://finance.prometheus.nz',
-              port: ':5000',
-              desc: 'Real-time portfolio ledger, expense breakdown and asset valuation.',
-              search: 'finance portfolio ledger analytics 5000'
-            },
-            {
-              title: 'ADHD Companion',
-              subdomain: 'adhd.prometheus.nz',
-              url: 'https://adhd.prometheus.nz',
-              port: ':5173',
-              desc: 'Cognitive assistant, dopamine pacing, micro-tasks and focus sessions.',
-              search: 'adhd cognitive companion focus tracker 5173'
-            }
+            { title: 'Family Portal', subdomain: 'family.prometheus.nz', url: 'https://family.prometheus.nz', port: ':5000', desc: 'Shared ecosystem portal, family calendar, tasks and home automation.' },
+            { title: 'Finance Analytics', subdomain: 'finance.prometheus.nz', url: 'https://finance.prometheus.nz', port: ':5000', desc: 'Real-time portfolio ledger, expense breakdown and asset valuation.' },
+            { title: 'ADHD Companion', subdomain: 'adhd.prometheus.nz', url: 'https://adhd.prometheus.nz', port: ':5173', desc: 'Cognitive assistant, dopamine pacing, micro-tasks and focus sessions.' }
           ]
         },
         {
@@ -1026,40 +916,11 @@
           index: '08',
           title: 'Technology',
           dotClass: 'dot-tech',
-          summary: 'Hardware telemetry, motorsport race analytics, automotive diagnostics, and video streaming.',
           projects: [
-            {
-              title: 'Technology Workspace',
-              subdomain: 'technology.prometheus.nz',
-              url: 'https://technology.prometheus.nz',
-              port: ':5000',
-              desc: 'Engineering workbench, CAD models, schematics and hardware lab tools.',
-              search: 'technology engineering workspace 5000'
-            },
-            {
-              title: 'Motorsport Telemetry',
-              subdomain: 'motorsport.prometheus.nz',
-              url: 'https://motorsport.prometheus.nz',
-              port: ':5000',
-              desc: 'Track-day telemetry capture, lap time comparison and engine sensor feeds.',
-              search: 'motorsport telemetry racing analytics 5000'
-            },
-            {
-              title: 'Automotive Telemetry',
-              subdomain: 'automotive.prometheus.nz',
-              url: 'https://automotive.prometheus.nz',
-              port: ':5000',
-              desc: 'OBD-II vehicle diagnostics, ECU status, live sensor bus and maintenance log.',
-              search: 'automotive vehicle diagnostic telemetry 5000'
-            },
-            {
-              title: 'Mooby Video Stream',
-              subdomain: 'mooby.prometheus.nz',
-              url: 'https://mooby.prometheus.nz',
-              port: ':3000',
-              desc: 'Private media pipeline, transcoding service and content playback hub.',
-              search: 'mooby cloud video search personalization 3000'
-            }
+            { title: 'Technology Workspace', subdomain: 'technology.prometheus.nz', url: 'https://technology.prometheus.nz', port: ':5000', desc: 'Engineering workbench, CAD models, schematics and hardware lab tools.' },
+            { title: 'Motorsport Telemetry', subdomain: 'motorsport.prometheus.nz', url: 'https://motorsport.prometheus.nz', port: ':5000', desc: 'Track-day telemetry capture, lap time comparison and engine sensor feeds.' },
+            { title: 'Automotive Telemetry', subdomain: 'automotive.prometheus.nz', url: 'https://automotive.prometheus.nz', port: ':5000', desc: 'OBD-II vehicle diagnostics, ECU status, live sensor bus and maintenance log.' },
+            { title: 'Mooby Video Stream', subdomain: 'mooby.prometheus.nz', url: 'https://mooby.prometheus.nz', port: ':3000', desc: 'Private media pipeline, transcoding service and content playback hub.' }
           ]
         },
         {
@@ -1067,7 +928,6 @@
           index: '09',
           title: 'Placeholder',
           dotClass: 'dot-standby',
-          summary: 'Sector 09 provisioned for incoming mission expansion and ingress allocation.',
           projects: []
         }
       ];
@@ -1080,12 +940,12 @@
       const stayCheckbox = document.getElementById('authStayCheckbox');
       const btnLock = document.getElementById('btnLockSession');
       const searchInput = document.getElementById('searchInput');
-      const gridContainer = document.getElementById('gridContainer');
-      const subviewBreadcrumb = document.getElementById('subviewBreadcrumb');
-      const btnBackToMatrix = document.getElementById('btnBackToMatrix');
-      const breadcrumbSectorName = document.getElementById('breadcrumbSectorName');
-      const breadcrumbSectorMeta = document.getElementById('breadcrumbSectorMeta');
-      const hudBrandSubtitle = document.getElementById('hudBrandSubtitle');
+      const spatialViewport = document.getElementById('spatialViewport');
+      const space3DScene = document.getElementById('space3DScene');
+      const targetSectorLabel = document.getElementById('targetSectorLabel');
+      const depthBarFill = document.getElementById('depthBarFill');
+      const depthLabel = document.getElementById('depthLabel');
+      const btnExitZoom = document.getElementById('btnExitZoom');
 
       // Authentication Session Handling
       function checkSession() {
@@ -1100,7 +960,6 @@
 
       function unlockUI() {
         authOverlay.classList.add('hidden');
-        renderCurrentView();
         searchInput.focus();
       }
 
@@ -1181,163 +1040,301 @@
         });
       });
 
-      // Lock Button
       btnLock.addEventListener('click', lockUI);
 
-      // Back Button to return to Matrix
-      btnBackToMatrix.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.hash = '';
+      // ======================================================================
+      // 3D SPATIAL ENGINE & INTERACTIVE CAMERA
+      // ======================================================================
+      const SPACING_X = 350;
+      const SPACING_Y = 350;
+      const DIVE_DEPTH = 480;
+
+      // Calculate 3x3 coordinates for 9 sectors
+      const sectorCoords = SECTOR_REGISTRY.map((s, idx) => {
+        const col = (idx % 3) - 1;       // -1, 0, 1
+        const row = Math.floor(idx / 3) - 1; // -1, 0, 1
+        return {
+          x: col * SPACING_X,
+          y: row * SPACING_Y,
+          z: 0
+        };
       });
 
-      // ======================================================================
-      // VIEW ROUTER & RENDERERS
-      // ======================================================================
-      function getActiveSectorIdFromHash() {
-        const hash = window.location.hash.replace(/^#/, '').trim();
-        if (hash.startsWith('sector=')) {
-          return hash.split('=')[1];
-        }
-        return null;
-      }
+      // Camera State
+      let camX = 0, camY = 0, camZ = 0;
+      let targetCamX = 0, targetCamY = 0, targetCamZ = 0;
+      let rotX = 0, rotY = 0;
+      let targetRotX = 0, targetRotY = 0;
+      let zoomProgress = 0; // 0.0 (matrix) to 1.0 (deep dive)
+      let targetZoom = 0;
 
-      function renderCurrentView() {
-        const activeSectorId = getActiveSectorIdFromHash();
-        const searchQuery = searchInput.value.toLowerCase().trim();
+      let hoveredSectorIdx = null;
+      let activeSectorIdx = null;
 
-        if (activeSectorId) {
-          const sector = SECTOR_REGISTRY.find(s => s.id === activeSectorId);
-          if (sector) {
-            renderSectorProjectsView(sector, searchQuery);
-            return;
-          }
-        }
+      // Build 3D Scene DOM Nodes
+      function build3DScene() {
+        space3DScene.innerHTML = '';
 
-        // Default: Render Landing Page 9 Category Cards
-        renderLandingCategoryMatrix(searchQuery);
-      }
-
-      // 1. Render Landing Page: 9 Category Cards (NO child projects listed)
-      function renderLandingCategoryMatrix(searchQuery) {
-        subviewBreadcrumb.style.display = 'none';
-        hudBrandSubtitle.textContent = 'PROMETHEUS FLEET LAUNCHPAD // 9 SECTORS // 25 INGRESS NODES';
-
-        gridContainer.innerHTML = '';
-
-        SECTOR_REGISTRY.forEach(sector => {
+        SECTOR_REGISTRY.forEach((sector, idx) => {
+          const coord = sectorCoords[idx];
           const isStandby = sector.id === 'standby';
-          const nodeCount = sector.projects.length;
 
-          // Search matching across sector title, summary, or child projects
-          const matchSector = !searchQuery || 
-            sector.title.toLowerCase().includes(searchQuery) ||
-            sector.summary.toLowerCase().includes(searchQuery) ||
-            sector.projects.some(p => 
-              p.title.toLowerCase().includes(searchQuery) || 
-              p.subdomain.toLowerCase().includes(searchQuery) ||
-              (p.search && p.search.toLowerCase().includes(searchQuery))
-            );
+          const node = document.createElement('div');
+          node.className = 'sector-space-node';
+          node.id = `node3D_${idx}`;
+          node.style.transform = `translate3d(${coord.x}px, ${coord.y}px, 0px)`;
 
-          if (!matchSector) return;
-
-          const card = document.createElement('div');
-          card.className = `category-entry-card sector-${sector.id} ${isStandby ? 'standby' : ''}`;
-          card.setAttribute('data-sector-id', sector.id);
-
-          card.innerHTML = `
+          // 1. FRONT SQUARE TILE (z = 0)
+          const frontTile = document.createElement('div');
+          frontTile.className = `sector-front-square sector-${sector.id} ${isStandby ? 'standby' : ''}`;
+          frontTile.setAttribute('data-idx', idx);
+          frontTile.innerHTML = `
             <span class="sector-dot ${sector.dotClass}"></span>
             <h2 class="sector-square-title">${sector.title}</h2>
           `;
 
-          card.addEventListener('click', () => {
-            window.location.hash = `sector=${sector.id}`;
+          // Front tile interactions
+          frontTile.addEventListener('mouseenter', () => {
+            hoveredSectorIdx = idx;
+            if (targetZoom < 0.3) {
+              targetSectorLabel.textContent = `TARGET ACQUIRED // SECTOR 0${idx + 1}: ${sector.title.toUpperCase()} [SCROLL TO DIVE]`;
+              frontTile.classList.add('active-target');
+            }
           });
 
-          gridContainer.appendChild(card);
-        });
-      }
+          frontTile.addEventListener('mouseleave', () => {
+            if (hoveredSectorIdx === idx) {
+              hoveredSectorIdx = null;
+              frontTile.classList.remove('active-target');
+              if (targetZoom < 0.1) {
+                targetSectorLabel.textContent = 'SPATIAL MATRIX READY // HOVER SECTOR & SCROLL TO DIVE';
+              }
+            }
+          });
 
-      // 2. Render Category View: 3x3 Grid of Project Cards (1 Card Per Project)
-      function renderSectorProjectsView(sector, searchQuery) {
-        subviewBreadcrumb.style.display = 'flex';
-        breadcrumbSectorName.textContent = `${sector.title.toUpperCase()}`;
-        breadcrumbSectorMeta.textContent = `SECTOR // ${sector.index} · 3x3 TACTICAL MATRIX · ${sector.projects.length} NODES ALLOCATED`;
-        hudBrandSubtitle.textContent = `SECTOR ${sector.index} // ${sector.title.toUpperCase()} // INGRESS CONTROLLER`;
+          frontTile.addEventListener('click', () => {
+            diveIntoSector(idx);
+          });
 
-        gridContainer.innerHTML = '';
+          // 2. DEEP PROJECT CLUSTER (3x3 grid at z = -480px)
+          const deepCluster = document.createElement('div');
+          deepCluster.className = 'sector-deep-cluster';
+          deepCluster.id = `deepCluster_${idx}`;
 
-        let displayedCount = 0;
-
-        // Render project cards
-        sector.projects.forEach((proj, idx) => {
-          const matchSearch = !searchQuery ||
-            proj.title.toLowerCase().includes(searchQuery) ||
-            proj.subdomain.toLowerCase().includes(searchQuery) ||
-            (proj.search && proj.search.toLowerCase().includes(searchQuery)) ||
-            (proj.desc && proj.desc.toLowerCase().includes(searchQuery));
-
-          if (!matchSearch) return;
-
-          displayedCount++;
-          const slotNum = String(idx + 1).padStart(2, '0');
-
-          const card = document.createElement('div');
-          card.className = 'project-card';
-          card.innerHTML = `
-            <div>
-              <div class="project-top">
-                <div class="project-id-tag">
-                  <span class="project-live-indicator"></span>
-                  <span>NODE // ${slotNum}</span>
+          // Populate project cards inside deep cluster
+          let cardCount = 0;
+          sector.projects.forEach((proj, pIdx) => {
+            cardCount++;
+            const slotNum = String(pIdx + 1).padStart(2, '0');
+            const pCard = document.createElement('div');
+            pCard.className = 'project-card';
+            pCard.innerHTML = `
+              <div>
+                <div class="project-top">
+                  <div class="project-id-tag">
+                    <span class="project-live-indicator"></span>
+                    <span>NODE // ${slotNum}</span>
+                  </div>
+                  <span class="port-pill">${proj.port}</span>
                 </div>
-                <span class="port-pill">${proj.port}</span>
+                <div class="project-body">
+                  <h3 class="project-title">${proj.title}</h3>
+                  <div class="project-subdomain">${proj.subdomain}</div>
+                  <p class="project-desc">${proj.desc}</p>
+                </div>
               </div>
-              <div class="project-body">
-                <h2 class="project-title">${proj.title}</h2>
-                <div class="project-subdomain">${proj.subdomain}</div>
-                <p class="project-desc">${proj.desc}</p>
-              </div>
-            </div>
-            <a href="${proj.url}" target="_blank" rel="noopener" class="project-action-btn">
-              <span>LAUNCH INGRESS</span>
-              <span class="btn-arrow">&#8599;</span>
-            </a>
-          `;
-          gridContainer.appendChild(card);
-        });
+              <a href="${proj.url}" target="_blank" rel="noopener" class="project-action-btn">
+                <span>LAUNCH INGRESS</span>
+                <span class="btn-arrow">&#8599;</span>
+              </a>
+            `;
+            deepCluster.appendChild(pCard);
+          });
 
-        // If not searching, fill remaining slots up to 9 to form a full 3x3 matrix aesthetic
-        if (!searchQuery) {
-          const totalSlots = 9;
-          for (let i = displayedCount; i < totalSlots; i++) {
-            const slotNum = String(i + 1).padStart(2, '0');
-            const standbyCard = document.createElement('div');
-            standbyCard.className = 'project-card slot-standby';
-            standbyCard.innerHTML = `
+          // Fill remaining slots up to 9 with tactical standby cards
+          for (let s = cardCount; s < 9; s++) {
+            const slotNum = String(s + 1).padStart(2, '0');
+            const sCard = document.createElement('div');
+            sCard.className = 'project-card slot-standby';
+            sCard.innerHTML = `
               <div class="slot-standby-inner">
                 <div class="slot-icon">&#10010;</div>
                 <div class="slot-title">STANDBY // SLOT ${slotNum}</div>
-                <div class="slot-desc">Unallocated Ingress Route</div>
-                <span class="port-pill" style="margin-top: 6px;">RESERVED</span>
+                <div class="slot-desc">Unallocated Ingress Channel</div>
+                <span class="port-pill" style="margin-top: 4px;">RESERVED</span>
               </div>
             `;
-            gridContainer.appendChild(standbyCard);
+            deepCluster.appendChild(sCard);
           }
-        }
+
+          node.appendChild(frontTile);
+          node.appendChild(deepCluster);
+          space3DScene.appendChild(node);
+        });
       }
 
-      // Hash change listener for browser back/forward and deep-linking
-      window.addEventListener('hashchange', () => {
-        searchInput.value = '';
-        renderCurrentView();
+      function diveIntoSector(idx) {
+        activeSectorIdx = idx;
+        targetZoom = 1.0;
+        targetCamX = sectorCoords[idx].x;
+        targetCamY = sectorCoords[idx].y;
+        targetCamZ = DIVE_DEPTH;
+        targetSectorLabel.textContent = `DOCKED // SECTOR 0${idx + 1}: ${SECTOR_REGISTRY[idx].title.toUpperCase()} // 3x3 CLUSTER ACTIVE`;
+        btnExitZoom.style.display = 'inline-flex';
+      }
+
+      function resetZoom() {
+        activeSectorIdx = null;
+        targetZoom = 0;
+        targetCamX = 0;
+        targetCamY = 0;
+        targetCamZ = 0;
+        targetSectorLabel.textContent = 'SPATIAL MATRIX READY // HOVER SECTOR & SCROLL TO DIVE';
+        btnExitZoom.style.display = 'none';
+        document.querySelectorAll('.sector-front-square').forEach(el => el.classList.remove('active-target'));
+      }
+
+      btnExitZoom.addEventListener('click', resetZoom);
+
+      // Keyboard navigation (ESC returns to 3x3 matrix)
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' || (e.key === 'Backspace' && targetZoom > 0.2 && document.activeElement !== searchInput)) {
+          resetZoom();
+        }
       });
 
-      // Real-time Search input listener
-      searchInput.addEventListener('input', () => {
-        renderCurrentView();
+      // ======================================================================
+      // SCROLL WHEEL DYNAMIC ZOOM CONTROLLER (INTERCEPTS SCROLL TO ZOOM 3D)
+      // ======================================================================
+      spatialViewport.addEventListener('wheel', (e) => {
+        e.preventDefault(); // Stop entire page from scrolling!
+
+        const zoomSpeed = 0.16;
+
+        if (e.deltaY < 0) {
+          // SCROLL UP / ZOOM IN
+          if (activeSectorIdx === null && hoveredSectorIdx !== null) {
+            activeSectorIdx = hoveredSectorIdx;
+          }
+          if (activeSectorIdx === null) {
+            // If hovering center or unassigned, default to center (Games)
+            activeSectorIdx = 4;
+          }
+
+          targetZoom = Math.min(1.0, targetZoom + zoomSpeed);
+          targetCamX = sectorCoords[activeSectorIdx].x;
+          targetCamY = sectorCoords[activeSectorIdx].y;
+          targetCamZ = targetZoom * DIVE_DEPTH;
+
+          targetSectorLabel.textContent = `DIVING // SECTOR 0${activeSectorIdx + 1}: ${SECTOR_REGISTRY[activeSectorIdx].title.toUpperCase()}`;
+        } else {
+          // SCROLL DOWN / ZOOM OUT
+          targetZoom = Math.max(0.0, targetZoom - zoomSpeed);
+          targetCamZ = targetZoom * DIVE_DEPTH;
+
+          if (targetZoom < 0.1) {
+            resetZoom();
+          } else if (activeSectorIdx !== null) {
+            targetCamX = sectorCoords[activeSectorIdx].x;
+            targetCamY = sectorCoords[activeSectorIdx].y;
+          }
+        }
+      }, { passive: false });
+
+      // Mouse Parallax movement
+      window.addEventListener('mousemove', (e) => {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const normX = (e.clientX - cx) / cx;
+        const normY = (e.clientY - cy) / cy;
+
+        // When zoomed out, provide subtle 3D rotational tilt
+        if (targetZoom < 0.4) {
+          targetRotY = normX * 9;
+          targetRotX = -normY * 7;
+        } else {
+          targetRotY = normX * 2.5;
+          targetRotX = -normY * 2.5;
+        }
       });
+
+      // Search Box Filter & Auto-Dive
+      searchInput.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase().trim();
+        if (!q) {
+          resetZoom();
+          return;
+        }
+
+        // Find sector matching the search term
+        const foundIdx = SECTOR_REGISTRY.findIndex(s => 
+          s.title.toLowerCase().includes(q) ||
+          s.projects.some(p => p.title.toLowerCase().includes(q) || p.subdomain.toLowerCase().includes(q))
+        );
+
+        if (foundIdx !== -1) {
+          diveIntoSector(foundIdx);
+        }
+      });
+
+      // 60FPS RAF RENDER LOOP
+      function animationLoop() {
+        // Smooth Lerp Camera
+        camX += (targetCamX - camX) * 0.12;
+        camY += (targetCamY - camY) * 0.12;
+        camZ += (targetCamZ - camZ) * 0.12;
+
+        rotX += (targetRotX - rotX) * 0.08;
+        rotY += (targetRotY - rotY) * 0.08;
+
+        zoomProgress += (targetZoom - zoomProgress) * 0.12;
+
+        // Apply World Matrix
+        space3DScene.style.transform = `translate3d(${-camX}px, ${-camY}px, ${camZ}px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+        // Update HUD Gauge
+        const pct = Math.round(zoomProgress * 100);
+        depthBarFill.style.width = `${pct}%`;
+        depthLabel.textContent = `${pct}%`;
+
+        if (zoomProgress > 0.45) {
+          btnExitZoom.style.display = 'inline-flex';
+        } else if (targetZoom === 0 && zoomProgress < 0.1) {
+          btnExitZoom.style.display = 'none';
+        }
+
+        // Cross-fade front square tiles and deep clusters based on camera proximity
+        SECTOR_REGISTRY.forEach((_, idx) => {
+          const front = document.querySelector(`.sector-front-square[data-idx="${idx}"]`);
+          const deep = document.getElementById(`deepCluster_${idx}`);
+
+          if (!front || !deep) return;
+
+          if (activeSectorIdx === idx) {
+            // Focused sector: fade front out, fade deep in
+            const frontOpacity = Math.max(0, 1 - zoomProgress * 2.2);
+            front.style.opacity = frontOpacity;
+            front.style.pointerEvents = frontOpacity > 0.5 ? 'auto' : 'none';
+
+            const deepOpacity = Math.min(1, Math.max(0, (zoomProgress - 0.25) * 1.35));
+            deep.style.opacity = deepOpacity;
+            deep.style.pointerEvents = deepOpacity > 0.8 ? 'auto' : 'none';
+          } else {
+            // Other sectors: dim if another sector is being zoomed
+            const dimFactor = Math.max(0.08, 1 - zoomProgress * 0.95);
+            front.style.opacity = dimFactor;
+            front.style.pointerEvents = zoomProgress < 0.2 ? 'auto' : 'none';
+            deep.style.opacity = 0;
+            deep.style.pointerEvents = 'none';
+          }
+        });
+
+        requestAnimationFrame(animationLoop);
+      }
 
       // Initialize
+      build3DScene();
+      requestAnimationFrame(animationLoop);
       checkSession();
     })();
   </script>

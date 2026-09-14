@@ -17,3 +17,4 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 9: Refactor landing page 9 cards into category entry points without listing child projects under card titles.
 - [x] Task 10: Implement 3x3 category project subview with dedicated cards per project, breadcrumbs, and deep-link routing.
 - [x] Task 11: Transform landing category cards into square tiles (aspect-ratio 1:1) displaying solely sector titles.
+- [x] Task 12: Implement dynamic 3D spatial viewport with hover-targeted scroll-wheel semantic zoom and 3x3 deep project clusters.
