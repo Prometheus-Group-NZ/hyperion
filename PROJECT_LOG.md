@@ -13,4 +13,5 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 5: Initialize Git repository, commit code, create GitHub repository under Prometheus-Group-NZ, and push to main.
 - [x] Task 6: Prepare Cloudflare Pages configuration (wrangler.jsonc) and public build directory.
 - [x] Task 7: Register hyperion.prometheus.nz in Arachne ingress routing matrix.
+- [x] Task 8: Migrate wrangler.jsonc to Cloudflare Workers Static Assets configuration to satisfy build CI.
 
