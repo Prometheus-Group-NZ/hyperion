@@ -14,4 +14,5 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 6: Prepare Cloudflare Pages configuration (wrangler.jsonc) and public build directory.
 - [x] Task 7: Register hyperion.prometheus.nz in Arachne ingress routing matrix.
 - [x] Task 8: Migrate wrangler.jsonc to Cloudflare Workers Static Assets configuration to satisfy build CI.
-
+- [x] Task 9: Refactor landing page 9 cards into category entry points without listing child projects under card titles.
+- [x] Task 10: Implement 3x3 category project subview with dedicated cards per project, breadcrumbs, and deep-link routing.

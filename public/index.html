@@ -83,8 +83,31 @@
       pointer-events: none;
     }
 
+    #authOverlay::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      z-index: 2;
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+
+    #authOverlay::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.65) 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
     .auth-center-stage {
       position: relative;
+      z-index: 4;
       width: 100%;
       max-width: 480px;
       display: flex;
@@ -150,81 +173,71 @@
     }
 
     .auth-stay-toggle {
+      margin-top: 20px;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 12px;
-      letter-spacing: 1px;
-      color: rgba(0, 255, 102, 0.65);
-      margin-top: 20px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      color: var(--crt-dim);
       cursor: pointer;
       user-select: none;
-      transition: color 0.15s;
-    }
-
-    .auth-stay-toggle:hover {
-      color: var(--crt-phosphor);
     }
 
     .auth-stay-toggle input {
       accent-color: var(--crt-phosphor);
       cursor: pointer;
-      width: 15px;
-      height: 15px;
     }
 
     .auth-status-msg {
       margin-top: 18px;
-      min-height: 20px;
       font-size: 12px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: color 0.2s;
+      letter-spacing: 1px;
+      color: var(--crt-dim);
+      min-height: 18px;
     }
 
     .auth-status-msg.error {
-      color: #ff3333;
-      text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
-      animation: shake 0.35s ease-in-out;
+      color: #ff3344;
+      text-shadow: 0 0 8px rgba(255, 51, 68, 0.5);
+      animation: shake 0.3s ease;
     }
 
     .auth-status-msg.info {
       color: var(--crt-phosphor);
-      text-shadow: 0 0 8px rgba(0, 255, 102, 0.4);
+      text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
     }
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-4px); }
     }
 
     /* ==========================================================================
-       MAIN LAUNCHPAD CONTAINER & HEADER
+       APP SHELL & TOP HUD
        ========================================================================== */
     .app-shell {
-      max-width: 1380px;
-      width: 100%;
-      margin: 0 auto;
-      padding: clamp(16px, 3vw, 36px);
+      flex: 1;
       display: flex;
       flex-direction: column;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: clamp(16px, 3vw, 32px);
+      box-sizing: border-box;
       gap: 24px;
-      flex: 1;
     }
 
-    header.top-hud {
+    .top-hud {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      padding: 16px 20px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      backdrop-filter: blur(12px);
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
     }
 
     .brand-section {
@@ -234,19 +247,18 @@
     }
 
     .brand-symbol {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-active);
       border-radius: 8px;
-      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 255, 102, 0.2));
-      border: 1px solid rgba(0, 229, 255, 0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      box-shadow: 0 0 16px rgba(0, 229, 255, 0.2);
+      color: var(--accent-green);
+      font-size: 16px;
+      box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
+      background: rgba(0, 255, 102, 0.05);
+      flex-shrink: 0;
     }
 
     .brand-text h1 {
@@ -270,7 +282,7 @@
       align-items: center;
       gap: 12px;
       flex: 1;
-      max-width: 520px;
+      max-width: 560px;
       justify-content: flex-end;
     }
 
@@ -322,6 +334,7 @@
       align-items: center;
       gap: 6px;
       transition: all 0.2s;
+      flex-shrink: 0;
     }
 
     .btn-lock:hover {
@@ -330,8 +343,70 @@
       color: #fff;
     }
 
+    /* Subview Navigation Breadcrumb Bar */
+    .view-breadcrumb-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .breadcrumb-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-nav-back {
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--accent-cyan);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-nav-back:hover {
+      background: rgba(0, 229, 255, 0.2);
+      border-color: var(--accent-cyan);
+      color: #fff;
+      transform: translateX(-2px);
+    }
+
+    .breadcrumb-path {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .breadcrumb-path .active-sector {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .breadcrumb-meta {
+      font-size: 11px;
+      color: var(--text-dim);
+      letter-spacing: 1px;
+    }
+
     /* ==========================================================================
-       9-CARD MINIMALIST TACTICAL GRID
+       3x3 GRID SYSTEM (APPLIED TO BOTH LANDING CATEGORIES & PROJECT SUBVIEW)
        ========================================================================== */
     .grid-container {
       display: grid;
@@ -351,193 +426,296 @@
       }
     }
 
-    .sector-card {
+    /* ==========================================================================
+       LANDING PAGE: 9 CATEGORY ENTRY CARDS
+       ========================================================================== */
+    .category-entry-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      padding: 20px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      justify-content: space-between;
+      min-height: 220px;
       position: relative;
       overflow: hidden;
       backdrop-filter: blur(10px);
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-    .sector-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.18);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    .category-entry-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.25);
+      background: var(--bg-card-hover);
+      box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
     }
 
-    .sector-card.highlight {
-      border-color: var(--accent-cyan);
-    }
+    .category-entry-card.sector-ai:hover { border-color: rgba(56, 189, 248, 0.5); }
+    .category-entry-card.sector-security:hover { border-color: rgba(239, 68, 68, 0.5); }
+    .category-entry-card.sector-intel:hover { border-color: rgba(245, 158, 11, 0.5); }
+    .category-entry-card.sector-fleet:hover { border-color: rgba(16, 185, 129, 0.5); }
+    .category-entry-card.sector-games:hover { border-color: rgba(168, 85, 247, 0.5); }
+    .category-entry-card.sector-science:hover { border-color: rgba(6, 182, 212, 0.5); }
+    .category-entry-card.sector-social:hover { border-color: rgba(236, 72, 153, 0.5); }
+    .category-entry-card.sector-technology:hover { border-color: rgba(234, 179, 8, 0.5); }
 
-    .sector-card.standby {
+    .category-entry-card.standby {
       border: 1px dashed rgba(255, 255, 255, 0.15);
       background: rgba(14, 20, 28, 0.4);
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      min-height: 240px;
+      cursor: default;
     }
 
-    .sector-card.standby:hover {
-      border-color: var(--accent-cyan);
-      background: rgba(14, 20, 28, 0.6);
-    }
-
-    .card-top {
+    .card-top-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding-bottom: 12px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
     }
 
     .sector-tag {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: 1px;
-      text-transform: uppercase;
       color: #fff;
     }
 
     .sector-dot {
-      width: 8px;
-      height: 8px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
+      flex-shrink: 0;
     }
 
-    .dot-ai { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
-    .dot-sec { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-    .dot-intel { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
-    .dot-fleet { background: #10b981; box-shadow: 0 0 8px #10b981; }
-    .dot-games { background: #a855f7; box-shadow: 0 0 8px #a855f7; }
-    .dot-sci { background: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
-    .dot-soc { background: #ec4899; box-shadow: 0 0 8px #ec4899; }
-    .dot-tech { background: #eab308; box-shadow: 0 0 8px #eab308; }
+    .dot-ai { background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+    .dot-sec { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+    .dot-intel { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+    .dot-fleet { background: #10b981; box-shadow: 0 0 10px #10b981; }
+    .dot-games { background: #a855f7; box-shadow: 0 0 10px #a855f7; }
+    .dot-sci { background: #06b6d4; box-shadow: 0 0 10px #06b6d4; }
+    .dot-soc { background: #ec4899; box-shadow: 0 0 10px #ec4899; }
+    .dot-tech { background: #eab308; box-shadow: 0 0 10px #eab308; }
     .dot-standby { background: #64748b; box-shadow: 0 0 8px #64748b; }
 
     .sector-index {
       font-family: 'Share Tech Mono', monospace;
       font-size: 11px;
+      letter-spacing: 1px;
       color: var(--text-dim);
     }
 
-    .link-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .card-mission-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex-grow: 1;
     }
 
-    .link-item {
+    .category-card-footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 12px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 8px;
-      text-decoration: none;
-      color: var(--text-main);
-      transition: all 0.15s ease;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
     }
 
-    .link-item:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.14);
-      transform: translateX(3px);
-    }
-
-    .link-left {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-
-    .link-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: #f1f5f9;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .link-subdomain {
+    .node-count-badge {
       font-family: 'Share Tech Mono', monospace;
       font-size: 11px;
-      color: var(--text-dim);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .link-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .port-pill {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      padding: 2px 6px;
+      letter-spacing: 0.5px;
+      padding: 4px 8px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 4px;
       color: var(--text-muted);
     }
 
-    .launch-arrow {
-      color: var(--text-dim);
-      font-size: 13px;
-      transition: color 0.15s, transform 0.15s;
+    .category-open-btn {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.15s ease, color 0.15s ease;
     }
 
-    .link-item:hover .launch-arrow {
+    .category-entry-card:hover .category-open-btn {
+      transform: translateX(4px);
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       SUBVIEW: 3x3 DEDICATED PROJECT CARDS (1 CARD PER PROJECT)
+       ========================================================================== */
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
+      background: var(--bg-card-hover);
+    }
+
+    .project-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .project-id-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .project-live-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 6px var(--accent-green);
+    }
+
+    .port-pill {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      padding: 2px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .project-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .project-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .project-subdomain {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
       color: var(--accent-cyan);
+      word-break: break-all;
+    }
+
+    .project-desc {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .project-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .project-action-btn:hover {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+
+    .project-action-btn .btn-arrow {
+      color: var(--accent-cyan);
+      transition: transform 0.15s ease;
+    }
+
+    .project-action-btn:hover .btn-arrow {
       transform: translate(2px, -2px);
     }
 
-    /* Standby Card Body */
-    .standby-content {
+    /* Standby slots inside 3x3 subview */
+    .project-card.slot-standby {
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      background: rgba(14, 20, 28, 0.35);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .slot-standby-inner {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
     }
 
-    .standby-icon {
-      font-size: 28px;
+    .slot-icon {
+      font-size: 22px;
       color: var(--text-dim);
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
-    .standby-title {
+    .slot-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-dim);
     }
 
-    .standby-desc {
+    .slot-desc {
       font-family: 'Share Tech Mono', monospace;
       font-size: 11px;
-      color: var(--text-dim);
-      max-width: 200px;
+      color: rgba(255, 255, 255, 0.2);
     }
 
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
     footer.bottom-bar {
       margin-top: auto;
       padding: 16px 20px;
@@ -602,15 +780,15 @@
   </div>
 
   <!-- ========================================================================
-       MAIN HYPERION 9-CARD LAUNCHPAD INTERFACE
+       MAIN HYPERION APPLICATION SHELL
        ======================================================================== -->
   <div class="app-shell" id="mainApp">
     <header class="top-hud">
       <div class="brand-section">
         <div class="brand-symbol">&#9650;</div>
         <div class="brand-text">
-          <h1>HYPERION</h1>
-          <p>PROMETHEUS FLEET LAUNCHPAD // 25 INGRESS NODES</p>
+          <h1 id="hudBrandTitle">HYPERION</h1>
+          <p id="hudBrandSubtitle">PROMETHEUS FLEET LAUNCHPAD // 9 SECTORS // 25 INGRESS NODES</p>
         </div>
       </div>
 
@@ -623,346 +801,24 @@
       </div>
     </header>
 
+    <!-- Subview Breadcrumb Bar (Visible in Category View) -->
+    <nav class="view-breadcrumb-bar" id="subviewBreadcrumb" style="display: none;">
+      <div class="breadcrumb-left">
+        <button class="btn-nav-back" id="btnBackToMatrix">&#8592; FLEET MATRIX</button>
+        <div class="breadcrumb-path">
+          <span>HYPERION</span>
+          <span>/</span>
+          <span>SECTORS</span>
+          <span>/</span>
+          <span class="active-sector" id="breadcrumbSectorName">AI &amp; AGENTS</span>
+        </div>
+      </div>
+      <div class="breadcrumb-meta" id="breadcrumbSectorMeta">3x3 TACTICAL GRID // 4 NODES ALLOCATED</div>
+    </nav>
+
+    <!-- Primary Grid View Container (3x3) -->
     <main class="grid-container" id="gridContainer">
-      <!-- 01: AI -->
-      <div class="sector-card" data-sector="ai">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-ai"></span> AI &amp; Agents</div>
-          <span class="sector-index">SECTOR // 01</span>
-        </div>
-        <div class="link-list">
-          <a href="https://antigravity.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="antigravity ide agent command center 3000">
-            <div class="link-left">
-              <span class="link-title">Antigravity IDE</span>
-              <span class="link-subdomain">antigravity.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:3000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://opencode.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="opencode remote runtime agent 8080">
-            <div class="link-left">
-              <span class="link-title">OpenCode Runtime</span>
-              <span class="link-subdomain">opencode.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:8080</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://iris.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="iris pc orchestrator duplex voice bridge 3000">
-            <div class="link-left">
-              <span class="link-title">Iris Duplex Voice</span>
-              <span class="link-subdomain">iris.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:3000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://lyra.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="lyra multi-modal voice orchestrator 8000">
-            <div class="link-left">
-              <span class="link-title">Lyra Orchestrator</span>
-              <span class="link-subdomain">lyra.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:8000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 02: SECURITY -->
-      <div class="sector-card" data-sector="security">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-sec"></span> Security &amp; Defense</div>
-          <span class="sector-index">SECTOR // 02</span>
-        </div>
-        <div class="link-list">
-          <a href="https://security.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="security defense intelligence hub 5000">
-            <div class="link-left">
-              <span class="link-title">Security Intelligence Hub</span>
-              <span class="link-subdomain">security.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://heimdall.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="heimdall dashboard portal gateway 5000">
-            <div class="link-left">
-              <span class="link-title">Heimdall Gateway</span>
-              <span class="link-subdomain">heimdall.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://alerts.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="alerts siren remote telemetry emergency incident">
-            <div class="link-left">
-              <span class="link-title">Siren Alerts</span>
-              <span class="link-subdomain">alerts.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">SIREN</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 03: INTEL -->
-      <div class="sector-card" data-sector="intel">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-intel"></span> Intel &amp; SIGINT</div>
-          <span class="sector-index">SECTOR // 03</span>
-        </div>
-        <div class="link-list">
-          <a href="https://halo.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="halo wireless sensor array kismet sigint 2501">
-            <div class="link-left">
-              <span class="link-title">Halo Wireless SIGINT</span>
-              <span class="link-subdomain">halo.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:2501</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://military.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="military tactical operations command defense 5000">
-            <div class="link-left">
-              <span class="link-title">Military Tactical Ops</span>
-              <span class="link-subdomain">military.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 04: FLEET -->
-      <div class="sector-card" data-sector="fleet">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-fleet"></span> Fleet &amp; Hardware</div>
-          <span class="sector-index">SECTOR // 04</span>
-        </div>
-        <div class="link-list">
-          <a href="https://arachne.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="arachne universal fleet manager telemetry ct 110 5000">
-            <div class="link-left">
-              <span class="link-title">Arachne Fleet Manager</span>
-              <span class="link-subdomain">arachne.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://server.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="server proxmox pve hypervisor 8006">
-            <div class="link-left">
-              <span class="link-title">Proxmox Hypervisor</span>
-              <span class="link-subdomain">server.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:8006</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://admin.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="admin core lan gateway router 80">
-            <div class="link-left">
-              <span class="link-title">Core Gateway Router</span>
-              <span class="link-subdomain">admin.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:80</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://printers.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="printers print management hub cups network spooler 631">
-            <div class="link-left">
-              <span class="link-title">CUPS Print Spooler</span>
-              <span class="link-subdomain">printers.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:631</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 05: GAMES -->
-      <div class="sector-card" data-sector="games">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-games"></span> Games &amp; Spatial</div>
-          <span class="sector-index">SECTOR // 05</span>
-        </div>
-        <div class="link-list">
-          <a href="https://games.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="games interactive gaming cluster entertainment 5000">
-            <div class="link-left">
-              <span class="link-title">Games Cluster</span>
-              <span class="link-subdomain">games.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://simulation.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="simulation virtual modeling engine 5000">
-            <div class="link-left">
-              <span class="link-title">Simulation Engine</span>
-              <span class="link-subdomain">simulation.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://virtualreality.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="virtualreality vr immersive spatial node 5000">
-            <div class="link-left">
-              <span class="link-title">Virtual Reality Node</span>
-              <span class="link-subdomain">virtualreality.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 06: SCIENCE -->
-      <div class="sector-card" data-sector="science">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-sci"></span> Science &amp; Research</div>
-          <span class="sector-index">SECTOR // 06</span>
-        </div>
-        <div class="link-list">
-          <a href="https://science.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="science research laboratory environment 5000">
-            <div class="link-left">
-              <span class="link-title">Science Lab</span>
-              <span class="link-subdomain">science.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://dna.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="dna browser genetic explorer research">
-            <div class="link-left">
-              <span class="link-title">DNA Browser</span>
-              <span class="link-subdomain">dna.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">DNA</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 07: SOCIAL -->
-      <div class="sector-card" data-sector="social">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-soc"></span> Social &amp; Life</div>
-          <span class="sector-index">SECTOR // 07</span>
-        </div>
-        <div class="link-list">
-          <a href="https://family.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="family portal shared services community 5000">
-            <div class="link-left">
-              <span class="link-title">Family Portal</span>
-              <span class="link-subdomain">family.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://finance.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="finance portfolio ledger analytics 5000">
-            <div class="link-left">
-              <span class="link-title">Finance Analytics</span>
-              <span class="link-subdomain">finance.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://adhd.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="adhd cognitive companion focus tracker 5173">
-            <div class="link-left">
-              <span class="link-title">ADHD Companion</span>
-              <span class="link-subdomain">adhd.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5173</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 08: TECHNOLOGY -->
-      <div class="sector-card" data-sector="technology">
-        <div class="card-top">
-          <div class="sector-tag"><span class="sector-dot dot-tech"></span> Technology &amp; Auto</div>
-          <span class="sector-index">SECTOR // 08</span>
-        </div>
-        <div class="link-list">
-          <a href="https://technology.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="technology engineering workspace 5000">
-            <div class="link-left">
-              <span class="link-title">Technology Workspace</span>
-              <span class="link-subdomain">technology.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://motorsport.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="motorsport telemetry racing analytics 5000">
-            <div class="link-left">
-              <span class="link-title">Motorsport Telemetry</span>
-              <span class="link-subdomain">motorsport.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://automotive.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="automotive vehicle diagnostic telemetry 5000">
-            <div class="link-left">
-              <span class="link-title">Automotive Telemetry</span>
-              <span class="link-subdomain">automotive.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:5000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-          <a href="https://mooby.prometheus.nz" target="_blank" rel="noopener" class="link-item" data-search="mooby cloud video search personalization 3000">
-            <div class="link-left">
-              <span class="link-title">Mooby Video Stream</span>
-              <span class="link-subdomain">mooby.prometheus.nz</span>
-            </div>
-            <div class="link-right">
-              <span class="port-pill">:3000</span>
-              <span class="launch-arrow">&#8599;</span>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- 09: STANDBY / PLACEHOLDER -->
-      <div class="sector-card standby" data-sector="standby">
-        <div class="standby-content">
-          <div class="standby-icon">&#10010;</div>
-          <div class="standby-title">STANDBY // RESERVED</div>
-          <div class="standby-desc">Sector 09 awaiting mission allocation</div>
-          <span class="port-pill" style="margin-top:4px;">PROVISIONED</span>
-        </div>
-      </div>
+      <!-- Dynamically populated by renderCurrentView() -->
     </main>
 
     <footer class="bottom-bar">
@@ -981,6 +837,293 @@
       const SESSION_KEY = 'hyperion_auth_session';
       const EXPIRY_KEY = 'hyperion_auth_expiry';
 
+      // ======================================================================
+      // FLEET REGISTRY: 9 CATEGORIES & 25 DISTRIBUTED INGRESS NODES
+      // ======================================================================
+      const SECTOR_REGISTRY = [
+        {
+          id: 'ai',
+          index: '01',
+          title: 'AI & Agents',
+          dotClass: 'dot-ai',
+          summary: 'Autonomous agent runtimes, neural voice duplex bridges & cognitive IDE interfaces.',
+          projects: [
+            {
+              title: 'Antigravity IDE',
+              subdomain: 'antigravity.prometheus.nz',
+              url: 'https://antigravity.prometheus.nz',
+              port: ':3000',
+              desc: 'Advanced agentic IDE and autonomous coding command hub.',
+              search: 'antigravity ide agent command center 3000'
+            },
+            {
+              title: 'OpenCode Runtime',
+              subdomain: 'opencode.prometheus.nz',
+              url: 'https://opencode.prometheus.nz',
+              port: ':8080',
+              desc: 'Distributed headless execution runtime and sandbox environment.',
+              search: 'opencode remote runtime agent 8080'
+            },
+            {
+              title: 'Iris Duplex Voice',
+              subdomain: 'iris.prometheus.nz',
+              url: 'https://iris.prometheus.nz',
+              port: ':3000',
+              desc: 'Real-time bidirectional neural voice bridge and speech telemetry.',
+              search: 'iris pc orchestrator duplex voice bridge 3000'
+            },
+            {
+              title: 'Lyra Orchestrator',
+              subdomain: 'lyra.prometheus.nz',
+              url: 'https://lyra.prometheus.nz',
+              port: ':8000',
+              desc: 'Multi-modal model routing and context memory manager.',
+              search: 'lyra multi-modal voice orchestrator 8000'
+            }
+          ]
+        },
+        {
+          id: 'security',
+          index: '02',
+          title: 'Security & Defense',
+          dotClass: 'dot-sec',
+          summary: 'Central perimeter defense, telemetry gateways, and incident sirens.',
+          projects: [
+            {
+              title: 'Security Intelligence Hub',
+              subdomain: 'security.prometheus.nz',
+              url: 'https://security.prometheus.nz',
+              port: ':5000',
+              desc: 'Global threat monitoring and automated perimeter firewall rules.',
+              search: 'security defense intelligence hub 5000'
+            },
+            {
+              title: 'Heimdall Gateway',
+              subdomain: 'heimdall.prometheus.nz',
+              url: 'https://heimdall.prometheus.nz',
+              port: ':5000',
+              desc: 'Unified authentication ingress proxy and access management.',
+              search: 'heimdall dashboard portal gateway 5000'
+            },
+            {
+              title: 'Siren Alerts',
+              subdomain: 'alerts.prometheus.nz',
+              url: 'https://alerts.prometheus.nz',
+              port: 'SIREN',
+              desc: 'Emergency broadcast system and push alert notification daemon.',
+              search: 'alerts siren remote telemetry emergency incident'
+            }
+          ]
+        },
+        {
+          id: 'intel',
+          index: '03',
+          title: 'Intel & SIGINT',
+          dotClass: 'dot-intel',
+          summary: 'Signals intelligence, RF spectrum monitoring, and tactical tracking.',
+          projects: [
+            {
+              title: 'Halo Wireless SIGINT',
+              subdomain: 'halo.prometheus.nz',
+              url: 'https://halo.prometheus.nz',
+              port: ':2501',
+              desc: 'Distributed wireless sensor array, packet capture and RF telemetry.',
+              search: 'halo wireless sensor array kismet sigint 2501'
+            },
+            {
+              title: 'Military Tactical Ops',
+              subdomain: 'military.prometheus.nz',
+              url: 'https://military.prometheus.nz',
+              port: ':5000',
+              desc: 'Tactical command, geofencing, and strategic node tracking.',
+              search: 'military tactical operations command defense 5000'
+            }
+          ]
+        },
+        {
+          id: 'fleet',
+          index: '04',
+          title: 'Fleet & Hardware',
+          dotClass: 'dot-fleet',
+          summary: 'Universal fleet management, virtual hypervisors, routing and peripheral spoolers.',
+          projects: [
+            {
+              title: 'Arachne Fleet Manager',
+              subdomain: 'arachne.prometheus.nz',
+              url: 'https://arachne.prometheus.nz',
+              port: ':5000',
+              desc: 'Autonomous telemetry agent, node orchestration and mesh sync.',
+              search: 'arachne universal fleet manager telemetry ct 110 5000'
+            },
+            {
+              title: 'Proxmox Hypervisor',
+              subdomain: 'server.prometheus.nz',
+              url: 'https://server.prometheus.nz',
+              port: ':8006',
+              desc: 'Cluster virtualization engine, VM/LXC compute and storage control.',
+              search: 'server proxmox pve hypervisor 8006'
+            },
+            {
+              title: 'Core Gateway Router',
+              subdomain: 'admin.prometheus.nz',
+              url: 'https://admin.prometheus.nz',
+              port: ':80',
+              desc: 'Core gateway routing, DNS resolver and LAN traffic control.',
+              search: 'admin core lan gateway router 80'
+            },
+            {
+              title: 'CUPS Print Spooler',
+              subdomain: 'printers.prometheus.nz',
+              url: 'https://printers.prometheus.nz',
+              port: ':631',
+              desc: 'Network print spooler daemon and document dispatch queue.',
+              search: 'printers print management hub cups network spooler 631'
+            }
+          ]
+        },
+        {
+          id: 'games',
+          index: '05',
+          title: 'Games & Spatial',
+          dotClass: 'dot-games',
+          summary: 'Interactive simulation clusters, virtual reality nodes, and 3D spatial engines.',
+          projects: [
+            {
+              title: 'Games Cluster',
+              subdomain: 'games.prometheus.nz',
+              url: 'https://games.prometheus.nz',
+              port: ':5000',
+              desc: 'Interactive gaming host, high-throughput render stream and state store.',
+              search: 'games interactive gaming cluster entertainment 5000'
+            },
+            {
+              title: 'Simulation Engine',
+              subdomain: 'simulation.prometheus.nz',
+              url: 'https://simulation.prometheus.nz',
+              port: ':5000',
+              desc: 'Physics modeling, procedural generation and world state computing.',
+              search: 'simulation virtual modeling engine 5000'
+            },
+            {
+              title: 'Virtual Reality Node',
+              subdomain: 'virtualreality.prometheus.nz',
+              url: 'https://virtualreality.prometheus.nz',
+              port: ':5000',
+              desc: 'Spatial computing gateway, WebXR bridge and immersive viewports.',
+              search: 'virtualreality vr immersive spatial node 5000'
+            }
+          ]
+        },
+        {
+          id: 'science',
+          index: '06',
+          title: 'Science & Research',
+          dotClass: 'dot-sci',
+          summary: 'Genetic exploration, bioinformatics, laboratory telemetry and scientific datasets.',
+          projects: [
+            {
+              title: 'Science Lab',
+              subdomain: 'science.prometheus.nz',
+              url: 'https://science.prometheus.nz',
+              port: ':5000',
+              desc: 'Central laboratory environment, scientific computing and data logging.',
+              search: 'science research laboratory environment 5000'
+            },
+            {
+              title: 'DNA Browser',
+              subdomain: 'dna.prometheus.nz',
+              url: 'https://dna.prometheus.nz',
+              port: 'DNA',
+              desc: 'Genomic sequence analysis, nucleotide mapping and genetic explorer.',
+              search: 'dna browser genetic explorer research'
+            }
+          ]
+        },
+        {
+          id: 'social',
+          index: '07',
+          title: 'Social & Life',
+          dotClass: 'dot-soc',
+          summary: 'Shared family portals, financial ledger analytics, and cognitive tracking.',
+          projects: [
+            {
+              title: 'Family Portal',
+              subdomain: 'family.prometheus.nz',
+              url: 'https://family.prometheus.nz',
+              port: ':5000',
+              desc: 'Shared ecosystem portal, family calendar, tasks and home automation.',
+              search: 'family portal shared services community 5000'
+            },
+            {
+              title: 'Finance Analytics',
+              subdomain: 'finance.prometheus.nz',
+              url: 'https://finance.prometheus.nz',
+              port: ':5000',
+              desc: 'Real-time portfolio ledger, expense breakdown and asset valuation.',
+              search: 'finance portfolio ledger analytics 5000'
+            },
+            {
+              title: 'ADHD Companion',
+              subdomain: 'adhd.prometheus.nz',
+              url: 'https://adhd.prometheus.nz',
+              port: ':5173',
+              desc: 'Cognitive assistant, dopamine pacing, micro-tasks and focus sessions.',
+              search: 'adhd cognitive companion focus tracker 5173'
+            }
+          ]
+        },
+        {
+          id: 'technology',
+          index: '08',
+          title: 'Technology & Auto',
+          dotClass: 'dot-tech',
+          summary: 'Hardware telemetry, motorsport race analytics, automotive diagnostics, and video streaming.',
+          projects: [
+            {
+              title: 'Technology Workspace',
+              subdomain: 'technology.prometheus.nz',
+              url: 'https://technology.prometheus.nz',
+              port: ':5000',
+              desc: 'Engineering workbench, CAD models, schematics and hardware lab tools.',
+              search: 'technology engineering workspace 5000'
+            },
+            {
+              title: 'Motorsport Telemetry',
+              subdomain: 'motorsport.prometheus.nz',
+              url: 'https://motorsport.prometheus.nz',
+              port: ':5000',
+              desc: 'Track-day telemetry capture, lap time comparison and engine sensor feeds.',
+              search: 'motorsport telemetry racing analytics 5000'
+            },
+            {
+              title: 'Automotive Telemetry',
+              subdomain: 'automotive.prometheus.nz',
+              url: 'https://automotive.prometheus.nz',
+              port: ':5000',
+              desc: 'OBD-II vehicle diagnostics, ECU status, live sensor bus and maintenance log.',
+              search: 'automotive vehicle diagnostic telemetry 5000'
+            },
+            {
+              title: 'Mooby Video Stream',
+              subdomain: 'mooby.prometheus.nz',
+              url: 'https://mooby.prometheus.nz',
+              port: ':3000',
+              desc: 'Private media pipeline, transcoding service and content playback hub.',
+              search: 'mooby cloud video search personalization 3000'
+            }
+          ]
+        },
+        {
+          id: 'standby',
+          index: '09',
+          title: 'Standby // Reserved',
+          dotClass: 'dot-standby',
+          summary: 'Sector 09 provisioned for incoming mission expansion and ingress allocation.',
+          projects: []
+        }
+      ];
+
+      // DOM Elements
       const authOverlay = document.getElementById('authOverlay');
       const authPinContainer = document.getElementById('authPinContainer');
       const pinBoxes = authPinContainer.querySelectorAll('.otp-square');
@@ -988,9 +1131,14 @@
       const stayCheckbox = document.getElementById('authStayCheckbox');
       const btnLock = document.getElementById('btnLockSession');
       const searchInput = document.getElementById('searchInput');
-      const cards = document.querySelectorAll('.sector-card');
+      const gridContainer = document.getElementById('gridContainer');
+      const subviewBreadcrumb = document.getElementById('subviewBreadcrumb');
+      const btnBackToMatrix = document.getElementById('btnBackToMatrix');
+      const breadcrumbSectorName = document.getElementById('breadcrumbSectorName');
+      const breadcrumbSectorMeta = document.getElementById('breadcrumbSectorMeta');
+      const hudBrandSubtitle = document.getElementById('hudBrandSubtitle');
 
-      // Check existing session
+      // Authentication Session Handling
       function checkSession() {
         const session = localStorage.getItem(SESSION_KEY);
         const expiry = parseInt(localStorage.getItem(EXPIRY_KEY) || '0', 10);
@@ -1003,6 +1151,7 @@
 
       function unlockUI() {
         authOverlay.classList.add('hidden');
+        renderCurrentView();
         searchInput.focus();
       }
 
@@ -1043,7 +1192,7 @@
         }
       }
 
-      // Input navigation for 6 OTP boxes
+      // PIN Input Navigation
       pinBoxes.forEach((box, idx) => {
         box.addEventListener('input', (e) => {
           const val = box.value.replace(/[^0-9]/g, '');
@@ -1068,7 +1217,6 @@
           }
         });
 
-        // Paste support
         box.addEventListener('paste', (e) => {
           e.preventDefault();
           const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
@@ -1084,34 +1232,176 @@
         });
       });
 
-      // Lock button
+      // Lock Button
       btnLock.addEventListener('click', lockUI);
 
-      // Search & Filtering
-      searchInput.addEventListener('input', (e) => {
-        const q = e.target.value.toLowerCase().trim();
-        cards.forEach(card => {
-          if (card.classList.contains('standby')) {
-            card.style.display = q ? 'none' : 'flex';
+      // Back Button to return to Matrix
+      btnBackToMatrix.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.hash = '';
+      });
+
+      // ======================================================================
+      // VIEW ROUTER & RENDERERS
+      // ======================================================================
+      function getActiveSectorIdFromHash() {
+        const hash = window.location.hash.replace(/^#/, '').trim();
+        if (hash.startsWith('sector=')) {
+          return hash.split('=')[1];
+        }
+        return null;
+      }
+
+      function renderCurrentView() {
+        const activeSectorId = getActiveSectorIdFromHash();
+        const searchQuery = searchInput.value.toLowerCase().trim();
+
+        if (activeSectorId) {
+          const sector = SECTOR_REGISTRY.find(s => s.id === activeSectorId);
+          if (sector) {
+            renderSectorProjectsView(sector, searchQuery);
             return;
           }
+        }
 
-          const links = card.querySelectorAll('.link-item');
-          let cardMatches = false;
+        // Default: Render Landing Page 9 Category Cards
+        renderLandingCategoryMatrix(searchQuery);
+      }
 
-          links.forEach(link => {
-            const searchData = (link.getAttribute('data-search') || '').toLowerCase();
-            const text = link.textContent.toLowerCase();
-            if (!q || searchData.includes(q) || text.includes(q)) {
-              link.style.display = 'flex';
-              cardMatches = true;
-            } else {
-              link.style.display = 'none';
-            }
+      // 1. Render Landing Page: 9 Category Cards (NO child projects listed)
+      function renderLandingCategoryMatrix(searchQuery) {
+        subviewBreadcrumb.style.display = 'none';
+        hudBrandSubtitle.textContent = 'PROMETHEUS FLEET LAUNCHPAD // 9 SECTORS // 25 INGRESS NODES';
+
+        gridContainer.innerHTML = '';
+
+        SECTOR_REGISTRY.forEach(sector => {
+          const isStandby = sector.id === 'standby';
+          const nodeCount = sector.projects.length;
+
+          // Search matching across sector title, summary, or child projects
+          const matchSector = !searchQuery || 
+            sector.title.toLowerCase().includes(searchQuery) ||
+            sector.summary.toLowerCase().includes(searchQuery) ||
+            sector.projects.some(p => 
+              p.title.toLowerCase().includes(searchQuery) || 
+              p.subdomain.toLowerCase().includes(searchQuery) ||
+              (p.search && p.search.toLowerCase().includes(searchQuery))
+            );
+
+          if (!matchSector) return;
+
+          const card = document.createElement('div');
+          card.className = `category-entry-card sector-${sector.id} ${isStandby ? 'standby' : ''}`;
+          card.setAttribute('data-sector-id', sector.id);
+
+          card.innerHTML = `
+            <div>
+              <div class="card-top-row">
+                <div class="sector-tag">
+                  <span class="sector-dot ${sector.dotClass}"></span>
+                  <span>${sector.title}</span>
+                </div>
+                <span class="sector-index">SECTOR // ${sector.index}</span>
+              </div>
+              <p class="card-mission-text">${sector.summary}</p>
+            </div>
+            <div class="category-card-footer">
+              <span class="node-count-badge">
+                ${isStandby ? 'PROVISIONED // STANDBY' : `${nodeCount} INGRESS NODES`}
+              </span>
+              <span class="category-open-btn">
+                ${isStandby ? 'VIEW SLOTS &#8594;' : 'ACCESS SECTOR &#8594;'}
+              </span>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            window.location.hash = `sector=${sector.id}`;
           });
 
-          card.style.display = cardMatches ? 'flex' : 'none';
+          gridContainer.appendChild(card);
         });
+      }
+
+      // 2. Render Category View: 3x3 Grid of Project Cards (1 Card Per Project)
+      function renderSectorProjectsView(sector, searchQuery) {
+        subviewBreadcrumb.style.display = 'flex';
+        breadcrumbSectorName.textContent = `${sector.title.toUpperCase()}`;
+        breadcrumbSectorMeta.textContent = `SECTOR // ${sector.index} · 3x3 TACTICAL MATRIX · ${sector.projects.length} NODES ALLOCATED`;
+        hudBrandSubtitle.textContent = `SECTOR ${sector.index} // ${sector.title.toUpperCase()} // INGRESS CONTROLLER`;
+
+        gridContainer.innerHTML = '';
+
+        let displayedCount = 0;
+
+        // Render project cards
+        sector.projects.forEach((proj, idx) => {
+          const matchSearch = !searchQuery ||
+            proj.title.toLowerCase().includes(searchQuery) ||
+            proj.subdomain.toLowerCase().includes(searchQuery) ||
+            (proj.search && proj.search.toLowerCase().includes(searchQuery)) ||
+            (proj.desc && proj.desc.toLowerCase().includes(searchQuery));
+
+          if (!matchSearch) return;
+
+          displayedCount++;
+          const slotNum = String(idx + 1).padStart(2, '0');
+
+          const card = document.createElement('div');
+          card.className = 'project-card';
+          card.innerHTML = `
+            <div>
+              <div class="project-top">
+                <div class="project-id-tag">
+                  <span class="project-live-indicator"></span>
+                  <span>NODE // ${slotNum}</span>
+                </div>
+                <span class="port-pill">${proj.port}</span>
+              </div>
+              <div class="project-body">
+                <h2 class="project-title">${proj.title}</h2>
+                <div class="project-subdomain">${proj.subdomain}</div>
+                <p class="project-desc">${proj.desc}</p>
+              </div>
+            </div>
+            <a href="${proj.url}" target="_blank" rel="noopener" class="project-action-btn">
+              <span>LAUNCH INGRESS</span>
+              <span class="btn-arrow">&#8599;</span>
+            </a>
+          `;
+          gridContainer.appendChild(card);
+        });
+
+        // If not searching, fill remaining slots up to 9 to form a full 3x3 matrix aesthetic
+        if (!searchQuery) {
+          const totalSlots = 9;
+          for (let i = displayedCount; i < totalSlots; i++) {
+            const slotNum = String(i + 1).padStart(2, '0');
+            const standbyCard = document.createElement('div');
+            standbyCard.className = 'project-card slot-standby';
+            standbyCard.innerHTML = `
+              <div class="slot-standby-inner">
+                <div class="slot-icon">&#10010;</div>
+                <div class="slot-title">STANDBY // SLOT ${slotNum}</div>
+                <div class="slot-desc">Unallocated Ingress Route</div>
+                <span class="port-pill" style="margin-top: 6px;">RESERVED</span>
+              </div>
+            `;
+            gridContainer.appendChild(standbyCard);
+          }
+        }
+      }
+
+      // Hash change listener for browser back/forward and deep-linking
+      window.addEventListener('hashchange', () => {
+        searchInput.value = '';
+        renderCurrentView();
+      });
+
+      // Real-time Search input listener
+      searchInput.addEventListener('input', () => {
+        renderCurrentView();
       });
 
       // Initialize
