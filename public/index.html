@@ -41,7 +41,7 @@
     }
 
     body {
-      background-color: var(--bg-base);
+      background-color: #020406;
       color: var(--text-main);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       height: 100vh;
@@ -49,9 +49,115 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.06) 0%, transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(0, 255, 102, 0.04) 0%, transparent 50%);
+    }
+
+    /* ==========================================================================
+       PROMETHEUS LIVING PERSONA BACKGROUND STAGE
+       - Zoomed in another 10% closer to face (scale: 1.30)
+       - 25% darker ambient lighting (deep chiaroscuro)
+       - Subtle breathing keyframes + micro-blink engine
+       ========================================================================== */
+    .persona-stage {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      background: #020406;
+      pointer-events: none;
+    }
+
+    /* Master Transform Layer (1.30x zoom & subtle breathing) */
+    .persona-master-frame {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 100vh;
+      transform: translate(-50%, -50%) scale(1.30);
+      transform-origin: center 42%;
+      will-change: transform, filter;
+      animation: subtleBreath 5.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes subtleBreath {
+      0% {
+        transform: translate(-50%, -50%) scale(1.30) translateY(0px);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.305) translateY(-3px);
+      }
+    }
+
+    /* Layer 1: Resting Image (Eyes Closed) */
+    .persona-layer-resting {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+      filter: brightness(0.68) contrast(1.18); /* 25% darker chiaroscuro */
+      opacity: 1;
+      transition: opacity 1.3s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 1;
+    }
+
+    /* Layer 2: Active Image (Eyes Open) */
+    .persona-layer-active {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+      filter: brightness(0.70) contrast(1.18); /* 25% darker chiaroscuro */
+      opacity: 0;
+      transition: opacity 1.1s cubic-bezier(0.25, 1, 0.5, 1);
+      z-index: 2;
+    }
+
+    /* Micro-Blink Animation Class */
+    .persona-layer-active.blink {
+      opacity: 0.05 !important;
+      transition: opacity 0.09s ease-in-out !important;
+    }
+
+    /* Layer 3: Living Promethean Eye Flame Canvas (Over Pupils) */
+    #eyeFlameCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease-out;
+      mix-blend-mode: screen;
+    }
+
+    /* 25% Darker Ambient Shadow Mask behind Cards */
+    .persona-vignette-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 4;
+      background: 
+        radial-gradient(circle at 50% 45%, rgba(2, 4, 6, 0.45) 0%, rgba(2, 4, 6, 0.82) 65%, rgba(2, 4, 6, 0.96) 100%),
+        linear-gradient(to bottom, rgba(2, 4, 6, 0.75) 0%, transparent 25%, transparent 75%, rgba(2, 4, 6, 0.9) 100%);
+      pointer-events: none;
+    }
+
+    /* Ambient Cyber Scanlines */
+    .persona-vignette-overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 3px);
+      pointer-events: none;
+      opacity: 0.6;
     }
 
     /* ==========================================================================
@@ -479,17 +585,22 @@
       height: 13px;
       border-radius: 50%;
       flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: none;
+      transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
-    .dot-ai { background: #38bdf8; box-shadow: 0 0 14px #38bdf8; }
-    .dot-sec { background: #ef4444; box-shadow: 0 0 14px #ef4444; }
-    .dot-intel { background: #f59e0b; box-shadow: 0 0 14px #f59e0b; }
-    .dot-fleet { background: #10b981; box-shadow: 0 0 14px #10b981; }
-    .dot-games { background: #a855f7; box-shadow: 0 0 14px #a855f7; }
-    .dot-sci { background: #06b6d4; box-shadow: 0 0 14px #06b6d4; }
-    .dot-soc { background: #ec4899; box-shadow: 0 0 14px #ec4899; }
-    .dot-tech { background: #eab308; box-shadow: 0 0 14px #eab308; }
-    .dot-standby { background: #64748b; box-shadow: 0 0 10px #64748b; }
+    /* Illuminated ONLY on-hover or when selected (.active-target) */
+    .sector-front-square:hover .dot-ai, .sector-front-square.active-target .dot-ai { background: #38bdf8; border-color: #38bdf8; box-shadow: 0 0 14px #38bdf8; }
+    .sector-front-square:hover .dot-sec, .sector-front-square.active-target .dot-sec { background: #ef4444; border-color: #ef4444; box-shadow: 0 0 14px #ef4444; }
+    .sector-front-square:hover .dot-intel, .sector-front-square.active-target .dot-intel { background: #f59e0b; border-color: #f59e0b; box-shadow: 0 0 14px #f59e0b; }
+    .sector-front-square:hover .dot-fleet, .sector-front-square.active-target .dot-fleet { background: #10b981; border-color: #10b981; box-shadow: 0 0 14px #10b981; }
+    .sector-front-square:hover .dot-games, .sector-front-square.active-target .dot-games { background: #a855f7; border-color: #a855f7; box-shadow: 0 0 14px #a855f7; }
+    .sector-front-square:hover .dot-sci, .sector-front-square.active-target .dot-sci { background: #06b6d4; border-color: #06b6d4; box-shadow: 0 0 14px #06b6d4; }
+    .sector-front-square:hover .dot-soc, .sector-front-square.active-target .dot-soc { background: #ec4899; border-color: #ec4899; box-shadow: 0 0 14px #ec4899; }
+    .sector-front-square:hover .dot-tech, .sector-front-square.active-target .dot-tech { background: #eab308; border-color: #eab308; box-shadow: 0 0 14px #eab308; }
+    .sector-front-square:hover .dot-standby, .sector-front-square.active-target .dot-standby { background: #64748b; border-color: #64748b; box-shadow: 0 0 10px #64748b; }
 
     /* 2. DEEP LAYER: 3x3 Project Grid Cluster (z = -480px) */
     .sector-deep-cluster {
@@ -643,11 +754,11 @@
     }
 
     /* ==========================================================================
-       TACTICAL 3D HUD OVERLAYS & CONTROLS
+       TACTICAL 3D HUD OVERLAYS & FOOTER
        ========================================================================== */
     .hud-3d-panel {
       position: absolute;
-      bottom: 24px;
+      bottom: 52px;
       right: 24px;
       display: flex;
       align-items: center;
@@ -656,6 +767,11 @@
       pointer-events: none;
       z-index: 50;
       font-family: 'Share Tech Mono', monospace;
+      transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body.header-is-hidden .hud-3d-panel {
+      bottom: 20px;
     }
 
     .hud-depth-gauge {
@@ -684,9 +800,101 @@
       transition: width 0.1s ease;
     }
 
+    /* FOOTER (5s Auto-Hide synchronized with top header) */
+    footer.bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border-subtle);
+      background: rgba(6, 9, 12, 0.95);
+      backdrop-filter: blur(14px);
+      z-index: 1000;
+      flex-shrink: 0;
+      transform: translateY(0);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+      box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    footer.bottom-bar.footer-hidden {
+      transform: translateY(100%);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 6px var(--accent-green);
+    }
+
+    .persona-status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #64748b;
+      display: inline-block;
+      margin-right: 6px;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .persona-status-dot.awake {
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+
+    .persona-status-dot.focused {
+      background: #fff;
+      box-shadow: 0 0 12px #fff;
+    }
+
   </style>
 </head>
 <body>
+
+  <!-- ========================================================================
+       PROMETHEUS LIVING PERSONA BACKGROUND STAGE
+       - Zoomed in another 10% closer to face (scale: 1.30)
+       - 25% darker ambient lighting (deep chiaroscuro)
+       - Subtle breathing keyframes + micro-blink engine
+       ======================================================================== -->
+  <div class="persona-stage" id="personaStage">
+    <div class="persona-master-frame" id="personaMasterFrame">
+      <img src="assets/prometheus_resting.jpg" alt="Prometheus Dormant" class="persona-layer-resting" id="imgResting">
+      <img src="assets/prometheus_active.jpg" alt="Prometheus Active" class="persona-layer-active" id="imgActive">
+      <canvas id="eyeFlameCanvas"></canvas>
+    </div>
+    <div class="persona-vignette-overlay"></div>
+  </div>
 
   <!-- ========================================================================
        IRIS-PC CRT TERMINAL AUTHENTICATION OVERLAY (6-DIGIT PIN)
@@ -755,6 +963,17 @@
       </div>
     </div>
   </main>
+
+  <footer class="bottom-bar" id="bottomBar">
+    <div class="footer-left">
+      <span class="footer-stat"><span class="status-live-dot"></span> PROMETHEUS MESH ONLINE</span>
+      <span>ZONE: prometheus.nz</span>
+    </div>
+    <div class="footer-right">
+      <span id="personaTelemetry" style="color: var(--text-dim); display: inline-flex; align-items: center;"><span class="persona-status-dot" id="personaDot"></span> <span id="personaStatusText">PROMETHEUS CORE: DORMANT</span></span>
+      <span style="color: var(--text-dim); margin-left: 12px;">HYPERION // 3D SPATIAL MATRIX</span>
+    </div>
+  </footer>
 
   <script>
     (function () {
@@ -880,6 +1099,170 @@
       const depthLabel = document.getElementById('depthLabel');
       const topHud = document.querySelector('.top-hud');
       const btnHeaderMacron = document.getElementById('btnHeaderMacron');
+      const bottomBar = document.getElementById('bottomBar');
+      const imgResting = document.getElementById('imgResting');
+      const imgActive = document.getElementById('imgActive');
+      const masterFrame = document.getElementById('personaMasterFrame');
+      const eyeCanvas = document.getElementById('eyeFlameCanvas');
+      const eyeCtx = eyeCanvas ? eyeCanvas.getContext('2d') : null;
+      const personaDot = document.getElementById('personaDot');
+      const personaStatusText = document.getElementById('personaStatusText');
+
+      // Prometheus Persona State
+      let isAwake = false;
+      let isHoveringCard = false;
+      let activeCardName = null;
+      let personaIdleTimer = null;
+      const PERSONA_IDLE_MS = 6500;
+      let eyeGlowIntensity = 0.0;
+      let targetGlowIntensity = 0.0;
+      let headTiltX = 0, headTiltY = 0;
+      let targetHeadX = 0, targetHeadY = 0;
+
+      function resizeEyeCanvas() {
+        if (eyeCanvas) {
+          eyeCanvas.width = window.innerWidth;
+          eyeCanvas.height = window.innerHeight;
+        }
+      }
+      window.addEventListener('resize', resizeEyeCanvas);
+      resizeEyeCanvas();
+
+      function wakeUp() {
+        if (!isAwake) {
+          isAwake = true;
+          if (imgActive) imgActive.style.opacity = '1';
+          if (imgResting) imgResting.style.opacity = '0';
+          if (eyeCanvas) eyeCanvas.style.opacity = '1';
+          targetGlowIntensity = 0.35;
+          if (personaDot) personaDot.className = 'persona-status-dot awake';
+          if (personaStatusText) personaStatusText.textContent = 'PROMETHEUS CORE: AWAKE // OBSERVING';
+        }
+        resetPersonaIdleTimer();
+      }
+
+      function goToSleep() {
+        if (isAwake && !isHoveringCard) {
+          isAwake = false;
+          if (imgActive) imgActive.style.opacity = '0';
+          if (imgResting) imgResting.style.opacity = '1';
+          if (eyeCanvas) eyeCanvas.style.opacity = '0';
+          targetGlowIntensity = 0.0;
+          targetHeadX = 0;
+          targetHeadY = 0;
+          if (personaDot) personaDot.className = 'persona-status-dot';
+          if (personaStatusText) personaStatusText.textContent = 'PROMETHEUS CORE: DORMANT';
+        }
+      }
+
+      function resetPersonaIdleTimer() {
+        if (personaIdleTimer) clearTimeout(personaIdleTimer);
+        personaIdleTimer = setTimeout(goToSleep, PERSONA_IDLE_MS);
+      }
+
+      function scheduleMicroBlink() {
+        const nextDelay = 4500 + Math.random() * 3000;
+        setTimeout(() => {
+          if (isAwake && imgActive && !imgActive.classList.contains('blink')) {
+            imgActive.classList.add('blink');
+            setTimeout(() => {
+              if (imgActive) imgActive.classList.remove('blink');
+            }, 130);
+          }
+          scheduleMicroBlink();
+        }, nextDelay);
+      }
+      scheduleMicroBlink();
+
+      // Procedural Spark Particles for Prometheus Eye Energy
+      const sparkParticles = [];
+      for (let i = 0; i < 32; i++) {
+        sparkParticles.push({
+          eye: i % 2 === 0 ? 'left' : 'right',
+          angle: Math.random() * Math.PI * 2,
+          radius: 2 + Math.random() * 15,
+          speed: 0.02 + Math.random() * 0.04,
+          size: 1 + Math.random() * 2.2,
+          alpha: 0.3 + Math.random() * 0.7
+        });
+      }
+
+      function renderEyeFlames(timestamp) {
+        eyeGlowIntensity += (targetGlowIntensity - eyeGlowIntensity) * 0.08;
+        headTiltX += (targetHeadX - headTiltX) * 0.08;
+        headTiltY += (targetHeadY - headTiltY) * 0.08;
+
+        if (masterFrame) {
+          masterFrame.style.transform = `translate(calc(-50% + ${headTiltX}px), calc(-50% + ${headTiltY}px)) scale(1.30)`;
+        }
+
+        if (eyeCtx && eyeCanvas) {
+          eyeCtx.clearRect(0, 0, eyeCanvas.width, eyeCanvas.height);
+
+          if (eyeGlowIntensity > 0.02) {
+            const cx = eyeCanvas.width / 2 + headTiltX;
+            const cy = eyeCanvas.height * 0.405 + headTiltY;
+            const eyeSpacing = Math.min(eyeCanvas.width * 0.16, 162);
+
+            const eyes = [
+              { x: cx - eyeSpacing, y: cy },
+              { x: cx + eyeSpacing, y: cy }
+            ];
+
+            eyes.forEach(eye => {
+              const coreRad = 16 + eyeGlowIntensity * 18;
+              const grad = eyeCtx.createRadialGradient(eye.x, eye.y, 2, eye.x, eye.y, coreRad);
+
+              if (isHoveringCard) {
+                grad.addColorStop(0, `rgba(220, 250, 255, ${0.95 * eyeGlowIntensity})`);
+                grad.addColorStop(0.25, `rgba(0, 229, 255, ${0.85 * eyeGlowIntensity})`);
+                grad.addColorStop(0.65, `rgba(14, 165, 233, ${0.45 * eyeGlowIntensity})`);
+                grad.addColorStop(1, 'rgba(0, 229, 255, 0)');
+              } else {
+                grad.addColorStop(0, `rgba(160, 235, 255, ${0.7 * eyeGlowIntensity})`);
+                grad.addColorStop(0.3, `rgba(0, 210, 255, ${0.5 * eyeGlowIntensity})`);
+                grad.addColorStop(0.7, `rgba(2, 132, 199, ${0.25 * eyeGlowIntensity})`);
+                grad.addColorStop(1, 'rgba(0, 210, 255, 0)');
+              }
+
+              eyeCtx.fillStyle = grad;
+              eyeCtx.beginPath();
+              eyeCtx.arc(eye.x, eye.y, coreRad, 0, Math.PI * 2);
+              eyeCtx.fill();
+
+              // Specular Starburst Rays when card hovered
+              if (isHoveringCard) {
+                eyeCtx.strokeStyle = `rgba(0, 229, 255, ${0.4 * eyeGlowIntensity})`;
+                eyeCtx.lineWidth = 1.5;
+                for (let r = 0; r < 4; r++) {
+                  const rayAngle = (timestamp * 0.0015) + (r * Math.PI / 2);
+                  eyeCtx.beginPath();
+                  eyeCtx.moveTo(eye.x - Math.cos(rayAngle) * 8, eye.y - Math.sin(rayAngle) * 8);
+                  eyeCtx.lineTo(eye.x + Math.cos(rayAngle) * 22, eye.y + Math.sin(rayAngle) * 22);
+                  eyeCtx.stroke();
+                }
+              }
+            });
+
+            // Swirling filaments
+            sparkParticles.forEach(p => {
+              p.angle += p.speed * (isHoveringCard ? 1.8 : 1.0);
+              const eyeX = (p.eye === 'left' ? cx - eyeSpacing : cx + eyeSpacing);
+              const eyeY = cy;
+              const px = eyeX + Math.cos(p.angle) * p.radius;
+              const py = eyeY + Math.sin(p.angle) * (p.radius * 0.85);
+
+              eyeCtx.fillStyle = `rgba(125, 235, 255, ${p.alpha * eyeGlowIntensity})`;
+              eyeCtx.beginPath();
+              eyeCtx.arc(px, py, p.size * (isHoveringCard ? 1.4 : 1.0), 0, Math.PI * 2);
+              eyeCtx.fill();
+            });
+          }
+        }
+
+        requestAnimationFrame(renderEyeFlames);
+      }
+      requestAnimationFrame(renderEyeFlames);
 
       // Authentication Session Handling
       function checkSession() {
@@ -894,6 +1277,7 @@
 
       function unlockUI() {
         authOverlay.classList.add('hidden');
+        wakeUp();
         if (typeof showHeader === 'function') {
           showHeader();
         }
@@ -1029,12 +1413,19 @@
             <h2 class="sector-square-title">${sector.title}</h2>
           `;
 
-          // Front tile interactions
+          // Front tile interactions (Triggers Prometheus Eye Flare & Head Focus)
           frontTile.addEventListener('mouseenter', () => {
             hoveredSectorIdx = idx;
             if (targetZoom < 0.3) {
               frontTile.classList.add('active-target');
             }
+            wakeUp();
+            isHoveringCard = true;
+            targetGlowIntensity = 1.0; // Flare eye energy on card hover
+            targetHeadX = (coord.x / SPACING_X) * 10;
+            targetHeadY = (coord.y / SPACING_Y) * 8;
+            if (personaDot) personaDot.className = 'persona-status-dot focused';
+            if (personaStatusText) personaStatusText.textContent = `PROMETHEUS CORE: LOCKED // ${sector.title.toUpperCase()}`;
           });
 
           frontTile.addEventListener('mouseleave', () => {
@@ -1042,6 +1433,13 @@
               hoveredSectorIdx = null;
               frontTile.classList.remove('active-target');
             }
+            isHoveringCard = false;
+            targetGlowIntensity = 0.35; // Return to subtle observing glow
+            targetHeadX = 0;
+            targetHeadY = 0;
+            if (personaDot) personaDot.className = 'persona-status-dot awake';
+            if (personaStatusText && isAwake) personaStatusText.textContent = 'PROMETHEUS CORE: AWAKE // OBSERVING';
+            resetPersonaIdleTimer();
           });
 
           frontTile.addEventListener('click', () => {
@@ -1136,6 +1534,7 @@
         }
 
         topHud.classList.add('header-hidden');
+        if (bottomBar) bottomBar.classList.add('footer-hidden');
         document.body.classList.add('header-is-hidden');
         if (headerHideTimer) {
           clearTimeout(headerHideTimer);
@@ -1145,6 +1544,7 @@
 
       function showHeader() {
         topHud.classList.remove('header-hidden');
+        if (bottomBar) bottomBar.classList.remove('footer-hidden');
         document.body.classList.remove('header-is-hidden');
         resetHeaderTimer();
       }
@@ -1157,7 +1557,7 @@
         }
       }
 
-      // Desktop Macron Button: Click to reveal header
+      // Desktop Macron Button: Click to reveal header & footer
       btnHeaderMacron.addEventListener('pointerdown', (e) => {
         e.stopPropagation();
       });
@@ -1166,16 +1566,19 @@
         showHeader();
       });
 
-      // Click off page header to dismiss it immediately
+      // Click off page header or footer to dismiss both immediately
       document.addEventListener('pointerdown', (e) => {
         if (!topHud.classList.contains('header-hidden')) {
-          if (!topHud.contains(e.target) && !btnHeaderMacron.contains(e.target)) {
+          const clickedOnMacron = btnHeaderMacron && btnHeaderMacron.contains(e.target);
+          const clickedOnTopHud = topHud && topHud.contains(e.target);
+          const clickedOnBottomBar = bottomBar && bottomBar.contains(e.target);
+          if (!clickedOnTopHud && !clickedOnMacron && !clickedOnBottomBar) {
             hideHeader(true);
           }
         }
       });
 
-      // Keep header alive while interacting directly with it
+      // Keep header and footer alive while interacting directly with them
       topHud.addEventListener('mouseenter', () => {
         if (headerHideTimer) clearTimeout(headerHideTimer);
       });
@@ -1185,6 +1588,18 @@
       topHud.addEventListener('mouseleave', () => {
         resetHeaderTimer();
       });
+
+      if (bottomBar) {
+        bottomBar.addEventListener('mouseenter', () => {
+          if (headerHideTimer) clearTimeout(headerHideTimer);
+        });
+        bottomBar.addEventListener('mousemove', () => {
+          if (headerHideTimer) clearTimeout(headerHideTimer);
+        });
+        bottomBar.addEventListener('mouseleave', () => {
+          resetHeaderTimer();
+        });
+      }
 
       searchInput.addEventListener('focus', () => {
         if (headerHideTimer) clearTimeout(headerHideTimer);
@@ -1200,6 +1615,7 @@
       let touchStartTime = 0;
 
       window.addEventListener('touchstart', (e) => {
+        wakeUp();
         if (e.touches && e.touches.length > 0) {
           touchStartY = e.touches[0].clientY;
           touchStartX = e.touches[0].clientX;
@@ -1270,12 +1686,20 @@
         }
       }, { passive: false });
 
-      // Mouse Parallax movement
+      // Mouse Parallax movement & Prometheus Wake
       window.addEventListener('mousemove', (e) => {
+        wakeUp();
+
         const cx = window.innerWidth / 2;
         const cy = window.innerHeight / 2;
         const normX = (e.clientX - cx) / cx;
         const normY = (e.clientY - cy) / cy;
+
+        // Parallax head tracking when not locked onto a sector card
+        if (!isHoveringCard) {
+          targetHeadX = normX * 5;
+          targetHeadY = normY * 3.5;
+        }
 
         // When zoomed out, provide subtle 3D rotational tilt
         if (targetZoom < 0.4) {
