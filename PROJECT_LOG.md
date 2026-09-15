@@ -23,3 +23,6 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 15: Fix header auto-hide timer collision, remove focus trap in unlockUI, remove accidental mouseenter trigger on macron button, and verify E2E 5s auto-hide loop.
 - [x] Task 16: Allow clicking off the page header to immediately hide it, with verified E2E pointerdown assertion.
 - [x] Task 17: Integrate Prometheus background persona (+10% zoom, 25% darker chiaroscuro, eye flame flare & micro-expressions), set indicator dots dark by default, and synchronize header/footer 5s auto-hide with macron and touch re-activation.
+- [x] Task 18: Refactor Hyperion architecture into strict modular files (public/css/styles.css, public/js/persona.js, public/js/app.js, lean index.html).
+- [x] Task 19: Implement distant ambient flickering fire glow from the right flank, 50% darker dormant sleep state, and physical 60fps curved eyelid aperture peeling.
+- [x] Task 20: Implement synchronized card-dive ocular zoom targeting Prometheus's eye to approx 90% of screen with verified mathematical landmark projection.
