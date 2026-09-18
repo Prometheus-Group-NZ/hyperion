@@ -24,7 +24,7 @@
   let isHoveringCard = false;
   let activeCardName = null;
   let idleTimer = null;
-  const IDLE_TIMEOUT_MS = 6500;
+  const IDLE_TIMEOUT_MS = 30000;
 
   // 3D Perspective, Ocular Dynamics & Semantic Dive Zoom
   let eyeOpenProgress = 0.0;
@@ -109,6 +109,8 @@
     if (!isAwake) {
       isAwake = true;
       document.body.classList.add('persona-is-awake');
+      if (imgActive) imgActive.style.opacity = '1';
+      if (imgResting) imgResting.style.opacity = '0';
       targetEyeOpen = 1.0;
       targetGlowIntensity = 0.35;
       targetDepthZ = 2;
@@ -122,6 +124,8 @@
     if (isAwake && !isHoveringCard && targetDiveZoom < 0.05) {
       isAwake = false;
       document.body.classList.remove('persona-is-awake');
+      if (imgActive) imgActive.style.opacity = '0';
+      if (imgResting) imgResting.style.opacity = '1';
       targetEyeOpen = 0.0;
       targetGlowIntensity = 0.0;
       targetDepthZ = -20;
@@ -141,13 +145,13 @@
   function scheduleMicroBlink() {
     const nextDelay = 3800 + Math.random() * 3200;
     setTimeout(() => {
-      if (isAwake && !isBlinking) {
+      if (isAwake && !isBlinking && imgActive) {
         isBlinking = true;
-        targetEyeOpen = 0.03; // Eyelids squeeze shut
+        imgActive.classList.add('blink');
         setTimeout(() => {
-          targetEyeOpen = 1.0; // Spring back open
-          setTimeout(() => { isBlinking = false; }, 90);
-        }, 65);
+          if (imgActive) imgActive.classList.remove('blink');
+          isBlinking = false;
+        }, 120);
       }
       scheduleMicroBlink();
     }, nextDelay);
@@ -273,32 +277,7 @@
     if (eyeCtx && eyeCanvas) {
       eyeCtx.clearRect(0, 0, eyeCanvas.width, eyeCanvas.height);
 
-      // 1. Physical Eyelid Peeling & Living Eye Texture Morphing
-      if (eyeOpenProgress > 0.02 && imgActive && imgActive.complete) {
-        const wSpan = eyeRadius * 1.85;
-        const hSpan = eyeRadius * 0.88 * eyeOpenProgress;
-
-        eyeCtx.save();
-        eyeCtx.beginPath();
-
-        // Left Eye Ocular Aperture (Almond Eyelid Mask)
-        eyeCtx.moveTo(leftX - wSpan, leftY + 2);
-        eyeCtx.quadraticCurveTo(leftX, leftY - hSpan * 1.18, leftX + wSpan, leftY - 1);
-        eyeCtx.quadraticCurveTo(leftX, leftY + hSpan * 0.62, leftX - wSpan, leftY + 2);
-
-        // Right Eye Ocular Aperture (Almond Eyelid Mask)
-        eyeCtx.moveTo(rightX - wSpan, rightY + 1);
-        eyeCtx.quadraticCurveTo(rightX, rightY - hSpan * 1.18, rightX + wSpan, rightY - 2);
-        eyeCtx.quadraticCurveTo(rightX, rightY + hSpan * 0.62, rightX - wSpan, rightY + 1);
-
-        eyeCtx.clip();
-
-        // Render the active eye texture seamlessly through the opening eyelids!
-        eyeCtx.drawImage(imgActive, ox + saccadeX, oy + saccadeY, rw, rh);
-        eyeCtx.restore();
-      }
-
-      // 2. Volumetric Promethean Iris Glow, Rays & Particles
+      // Volumetric Promethean Iris Glow, Rays & Particles over exact pupils
       if (eyeGlowIntensity > 0.02 && eyeOpenProgress > 0.15) {
         const leftPupil = { x: leftX + saccadeX, y: leftY + saccadeY };
         const rightPupil = { x: rightX + saccadeX, y: rightY + saccadeY };
