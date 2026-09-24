@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "external_directory": {
+      "*": "ask",
+      "~/.config/opencode/**": "allow",
+      "C:/Users/dionc/.config/opencode/**": "allow"
+    },
+    "edit": {
+      "~/.config/opencode/**": "deny",
+      "C:/Users/dionc/.config/opencode/**": "deny"
+    }
+  }
+}

@@ -1,5 +1,7 @@
 # HYPERION — Project Log
 
+## Decisions
+
 ## Mission
 Build **HYPERION**, the high-density minimalist tactical launchpad and central ingress catalog for Prometheus Group NZ on Cloudflare Pages (`hyperion.prometheus.nz`).
 
@@ -26,3 +28,7 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 18: Refactor Hyperion architecture into strict modular files (public/css/styles.css, public/js/persona.js, public/js/app.js, lean index.html).
 - [x] Task 19: Implement distant ambient flickering fire glow from the right flank, 50% darker dormant sleep state, and physical 60fps curved eyelid aperture peeling.
 - [x] Task 20: Implement synchronized card-dive ocular zoom targeting Prometheus's eye to approx 90% of screen with verified mathematical landmark projection.
+
+## To-do
+
+## Log
