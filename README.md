@@ -11,7 +11,7 @@
   2. **Security**: Security Portal, Heimdall Gateway, Siren Incident Alerts
   3. **Intel**: Halo Kismet SIGINT Node, Tactical Military Operations
   4. **Fleet**: Arachne Fleet Manager, Proxmox Hypervisor, Core LAN Switchboard, CUPS Spooler
-  5. **Games**: Games Cluster, Simulation Modeling Engine, Virtual Reality Spatial Node
+  5. **Games**: Tank Combat Arena, Games Cluster, Simulation Modeling Engine, Virtual Reality Spatial Node
   6. **Science**: Science & Research Lab, DNA Browser
   7. **Social**: Family Portal, Finance & Ledger Analytics
   8. **Technology**: Technology Workspace, Motorsport Telemetry, Automotive Diagnostics

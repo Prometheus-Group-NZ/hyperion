@@ -69,6 +69,7 @@
       title: 'Games',
       dotClass: 'dot-games',
       projects: [
+        { title: 'Tank Combat Arena', subdomain: 'games.prometheus.nz/tank', url: 'https://games.prometheus.nz/tank', port: ':8080', desc: '4-player 3D tank combat arena — real-world terrain, fire-control ballistics, thermal/NV optics and AI opponents.' },
         { title: 'Games Cluster', subdomain: 'games.prometheus.nz', url: 'https://games.prometheus.nz', port: ':5000', desc: 'Interactive gaming host, high-throughput render stream and state store.' },
         { title: 'Simulation Engine', subdomain: 'simulation.prometheus.nz', url: 'https://simulation.prometheus.nz', port: ':5000', desc: 'Physics modeling, procedural generation and world state computing.' },
         { title: 'Virtual Reality Node', subdomain: 'virtualreality.prometheus.nz', url: 'https://virtualreality.prometheus.nz', port: ':5000', desc: 'Spatial computing gateway, WebXR bridge and immersive viewports.' }
