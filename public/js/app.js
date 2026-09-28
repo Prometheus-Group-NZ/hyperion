@@ -41,15 +41,11 @@
       ]
     },
     {
-      id: 'intel',
+      id: 'mimisbrunnr',
       index: '03',
-      title: 'Intel',
-      dotClass: 'dot-intel',
-      projects: [
-        { title: 'ADS-B Radar & SIGINT SDR', subdomain: 'adsb.prometheus.nz', url: 'https://adsb.prometheus.nz', port: ':1090', desc: 'Real-time 1090MHz Mode-S ADS-B aircraft radar & dynamic multi-band SDR spectrum switchboard.' },
-        { title: 'Halo Wireless SIGINT', subdomain: 'halo.prometheus.nz', url: 'https://halo.prometheus.nz', port: ':2501', desc: 'Distributed wireless sensor array, packet capture and RF telemetry.' },
-        { title: 'Military Tactical Ops', subdomain: 'military.prometheus.nz', url: 'https://military.prometheus.nz', port: ':5000', desc: 'Tactical command, geofencing, and strategic node tracking.' }
-      ]
+      title: 'Mímisbrunnr',
+      dotClass: 'dot-mimisbrunnr',
+      projects: []
     },
     {
       id: 'fleet',
@@ -64,15 +60,14 @@
       ]
     },
     {
-      id: 'games',
+      id: 'intel',
       index: '05',
-      title: 'Games',
-      dotClass: 'dot-games',
+      title: 'Intel',
+      dotClass: 'dot-intel',
       projects: [
-        { title: 'Tank Combat Arena', subdomain: 'games.prometheus.nz/tank', url: 'https://games.prometheus.nz/tank', port: ':11080', desc: '4-player 3D tank combat arena — real-world terrain, fire-control ballistics, thermal/NV optics and AI opponents.' },
-        { title: 'Games Cluster', subdomain: 'games.prometheus.nz', url: 'https://games.prometheus.nz', port: ':5000', desc: 'Interactive gaming host, high-throughput render stream and state store.' },
-        { title: 'Simulation Engine', subdomain: 'simulation.prometheus.nz', url: 'https://simulation.prometheus.nz', port: ':5000', desc: 'Physics modeling, procedural generation and world state computing.' },
-        { title: 'Virtual Reality Node', subdomain: 'virtualreality.prometheus.nz', url: 'https://virtualreality.prometheus.nz', port: ':5000', desc: 'Spatial computing gateway, WebXR bridge and immersive viewports.' }
+        { title: 'ADS-B Radar & SIGINT SDR', subdomain: 'adsb.prometheus.nz', url: 'https://adsb.prometheus.nz', port: ':1090', desc: 'Real-time 1090MHz Mode-S ADS-B aircraft radar & dynamic multi-band SDR spectrum switchboard.' },
+        { title: 'Halo Wireless SIGINT', subdomain: 'halo.prometheus.nz', url: 'https://halo.prometheus.nz', port: ':2501', desc: 'Distributed wireless sensor array, packet capture and RF telemetry.' },
+        { title: 'Military Tactical Ops', subdomain: 'military.prometheus.nz', url: 'https://military.prometheus.nz', port: ':5000', desc: 'Tactical command, geofencing, and strategic node tracking.' }
       ]
     },
     {
@@ -109,11 +104,16 @@
       ]
     },
     {
-      id: 'standby',
+      id: 'games',
       index: '09',
-      title: 'Placeholder',
-      dotClass: 'dot-standby',
-      projects: []
+      title: 'Games',
+      dotClass: 'dot-games',
+      projects: [
+        { title: 'Tank Combat Arena', subdomain: 'games.prometheus.nz/tank', url: 'https://games.prometheus.nz/tank', port: ':11080', desc: '4-player 3D tank combat arena — real-world terrain, fire-control ballistics, thermal/NV optics and AI opponents.' },
+        { title: 'Games Cluster', subdomain: 'games.prometheus.nz', url: 'https://games.prometheus.nz', port: ':5000', desc: 'Interactive gaming host, high-throughput render stream and state store.' },
+        { title: 'Simulation Engine', subdomain: 'simulation.prometheus.nz', url: 'https://simulation.prometheus.nz', port: ':5000', desc: 'Physics modeling, procedural generation and world state computing.' },
+        { title: 'Virtual Reality Node', subdomain: 'virtualreality.prometheus.nz', url: 'https://virtualreality.prometheus.nz', port: ':5000', desc: 'Spatial computing gateway, WebXR bridge and immersive viewports.' }
+      ]
     }
   ];
 
@@ -309,7 +309,7 @@
 
       // 2. DEEP PROJECT CLUSTER (3x3 grid at z = -480px)
       const deepCluster = document.createElement('div');
-      deepCluster.className = 'sector-deep-cluster';
+      deepCluster.className = `sector-deep-cluster sector-cluster-${sector.id}`;
       deepCluster.id = `deepCluster_${idx}`;
 
       let cardCount = 0;
@@ -341,13 +341,17 @@
       for (let s = cardCount; s < 9; s++) {
         const slotNum = String(s + 1).padStart(2, '0');
         const sCard = document.createElement('div');
-        sCard.className = 'project-card slot-standby';
+        const isMimisbrunnr = sector.id === 'mimisbrunnr';
+        sCard.className = `project-card slot-standby ${isMimisbrunnr ? 'slot-mimisbrunnr' : ''}`;
+        const slotTitle = isMimisbrunnr ? `MÍMISBRUNNR // SLOT ${slotNum}` : `STANDBY // SLOT ${slotNum}`;
+        const slotDesc = isMimisbrunnr ? 'mimisbrunnr.prometheus.nz' : 'Unallocated Ingress Channel';
+        const pillText = isMimisbrunnr ? 'UNALLOCATED' : 'RESERVED';
         sCard.innerHTML = `
           <div class="slot-standby-inner">
-            <div class="slot-icon">&#10010;</div>
-            <div class="slot-title">STANDBY // SLOT ${slotNum}</div>
-            <div class="slot-desc">Unallocated Ingress Channel</div>
-            <span class="port-pill" style="margin-top: 4px;">RESERVED</span>
+            <div class="slot-icon">${isMimisbrunnr ? '&#9670;' : '&#10010;'}</div>
+            <div class="slot-title">${slotTitle}</div>
+            <div class="slot-desc">${slotDesc}</div>
+            <span class="port-pill" style="margin-top: 4px;">${pillText}</span>
           </div>
         `;
         deepCluster.appendChild(sCard);

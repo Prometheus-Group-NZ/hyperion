@@ -599,6 +599,7 @@ body.header-is-hidden .btn-header-macron {
   cursor: pointer;
   transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   transform-style: preserve-3d;
+  overflow: hidden;
 }
 
 .sector-front-square:hover {
@@ -614,12 +615,33 @@ body.header-is-hidden .btn-header-macron {
 
 .sector-front-square.sector-ai:hover { border-color: rgba(56, 189, 248, 0.6); box-shadow: 0 0 30px rgba(56, 189, 248, 0.25); }
 .sector-front-square.sector-security:hover { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 0 30px rgba(239, 68, 68, 0.25); }
-.sector-front-square.sector-intel:hover { border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 0 30px rgba(245, 158, 11, 0.25); }
+.sector-front-square.sector-mimisbrunnr:hover { border-color: rgba(20, 184, 166, 0.65); box-shadow: 0 0 32px rgba(20, 184, 166, 0.28); }
 .sector-front-square.sector-fleet:hover { border-color: rgba(16, 185, 129, 0.6); box-shadow: 0 0 30px rgba(16, 185, 129, 0.25); }
-.sector-front-square.sector-games:hover { border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 0 30px rgba(168, 85, 247, 0.25); }
+.sector-front-square.sector-intel:hover { border-color: rgba(245, 158, 11, 0.6); box-shadow: 0 0 30px rgba(245, 158, 11, 0.25); }
 .sector-front-square.sector-science:hover { border-color: rgba(6, 182, 212, 0.6); box-shadow: 0 0 30px rgba(6, 182, 212, 0.25); }
 .sector-front-square.sector-social:hover { border-color: rgba(236, 72, 153, 0.6); box-shadow: 0 0 30px rgba(236, 72, 153, 0.25); }
 .sector-front-square.sector-technology:hover { border-color: rgba(234, 179, 8, 0.6); box-shadow: 0 0 30px rgba(234, 179, 8, 0.25); }
+.sector-front-square.sector-games:hover { border-color: rgba(168, 85, 247, 0.6); box-shadow: 0 0 30px rgba(168, 85, 247, 0.25); }
+
+/* Mímisbrunnr World Tree & Sacred Well Darkened Watermark */
+.sector-front-square.sector-mimisbrunnr::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../assets/mimisbrunnr_tree_well.svg') center center / 82% no-repeat;
+  opacity: 0.16;
+  filter: brightness(0.65) contrast(1.2);
+  pointer-events: none;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  border-radius: 14px;
+  z-index: 0;
+}
+
+.sector-front-square.sector-mimisbrunnr:hover::before,
+.sector-front-square.sector-mimisbrunnr.active-target::before {
+  opacity: 0.32;
+  filter: brightness(0.9) contrast(1.3);
+}
 
 .sector-front-square.standby {
   border: 1px dashed rgba(255, 255, 255, 0.15);
@@ -635,6 +657,8 @@ body.header-is-hidden .btn-header-macron {
   color: #fff;
   text-align: center;
   margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .sector-dot {
@@ -646,13 +670,16 @@ body.header-is-hidden .btn-header-macron {
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: none;
   transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  z-index: 1;
 }
 
 /* Illuminated ONLY on-hover or when selected (.active-target) */
 .sector-front-square:hover .dot-ai, .sector-front-square.active-target .dot-ai { background: #38bdf8; border-color: #38bdf8; box-shadow: 0 0 14px #38bdf8; }
 .sector-front-square:hover .dot-sec, .sector-front-square.active-target .dot-sec { background: #ef4444; border-color: #ef4444; box-shadow: 0 0 14px #ef4444; }
-.sector-front-square:hover .dot-intel, .sector-front-square.active-target .dot-intel { background: #f59e0b; border-color: #f59e0b; box-shadow: 0 0 14px #f59e0b; }
+.sector-front-square:hover .dot-mimisbrunnr, .sector-front-square.active-target .dot-mimisbrunnr { background: #14b8a6; border-color: #14b8a6; box-shadow: 0 0 14px #14b8a6; }
 .sector-front-square:hover .dot-fleet, .sector-front-square.active-target .dot-fleet { background: #10b981; border-color: #10b981; box-shadow: 0 0 14px #10b981; }
+.sector-front-square:hover .dot-intel, .sector-front-square.active-target .dot-intel { background: #f59e0b; border-color: #f59e0b; box-shadow: 0 0 14px #f59e0b; }
 .sector-front-square:hover .dot-games, .sector-front-square.active-target .dot-games { background: #a855f7; border-color: #a855f7; box-shadow: 0 0 14px #a855f7; }
 .sector-front-square:hover .dot-sci, .sector-front-square.active-target .dot-sci { background: #06b6d4; border-color: #06b6d4; box-shadow: 0 0 14px #06b6d4; }
 .sector-front-square:hover .dot-soc, .sector-front-square.active-target .dot-soc { background: #ec4899; border-color: #ec4899; box-shadow: 0 0 14px #ec4899; }
@@ -671,6 +698,23 @@ body.header-is-hidden .btn-header-macron {
   opacity: 0;
   transform-style: preserve-3d;
   transition: opacity 0.2s ease;
+}
+
+/* Mímisbrunnr Landing Page // Darkened SVG Tree & Well Background Graphic */
+.sector-deep-cluster.sector-cluster-mimisbrunnr::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 820px;
+  height: 820px;
+  background: url('../assets/mimisbrunnr_tree_well.svg') center center / contain no-repeat;
+  opacity: 0.16;
+  filter: brightness(0.65) contrast(1.2);
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.4s ease;
 }
 
 .project-card {
@@ -808,6 +852,39 @@ body.header-is-hidden .btn-header-macron {
   font-family: 'Share Tech Mono', monospace;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.2);
+}
+
+/* 9 Unallocated Placeholders for mimisbrunnr.prometheus.nz landing page */
+.project-card.slot-standby.slot-mimisbrunnr {
+  border: 1px dashed rgba(20, 184, 166, 0.28);
+  background: rgba(14, 20, 28, 0.52);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+.project-card.slot-standby.slot-mimisbrunnr:hover {
+  border-color: rgba(20, 184, 166, 0.55);
+  background: rgba(14, 24, 32, 0.72);
+  box-shadow: 0 12px 30px -5px rgba(20, 184, 166, 0.22);
+}
+
+.project-card.slot-standby.slot-mimisbrunnr .slot-icon {
+  color: #14b8a6;
+  opacity: 0.8;
+}
+
+.project-card.slot-standby.slot-mimisbrunnr .slot-title {
+  color: #2dd4bf;
+}
+
+.project-card.slot-standby.slot-mimisbrunnr .slot-desc {
+  color: var(--accent-cyan);
+  opacity: 0.85;
+}
+
+.project-card.slot-standby.slot-mimisbrunnr .port-pill {
+  border-color: rgba(20, 184, 166, 0.3);
+  color: #5eead4;
 }
 
 /* ==========================================================================

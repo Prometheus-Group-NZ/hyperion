@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="trunkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.85" />
+      <stop offset="70%" stop-color="#0f766e" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#042f2e" stop-opacity="0.5" />
+    </linearGradient>
+    <linearGradient id="wellGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#0284c7" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#082f49" stop-opacity="0.5" />
+    </linearGradient>
+    <radialGradient id="waterGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6" />
+      <stop offset="60%" stop-color="#0f766e" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#020406" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="haloGlow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.18" />
+      <stop offset="60%" stop-color="#0f766e" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#020406" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Ambient Ethereal Canopy Backdrop -->
+  <circle cx="300" cy="240" r="230" fill="url(#haloGlow)" />
+
+  <!-- ======================================================================
+       YGGDRASIL CANOPY & SACRED BRANCHES
+       ====================================================================== -->
+  <g fill="none" stroke="url(#trunkGrad)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Outer Branch Network -->
+    <path d="M300,310 C300,240 280,180 230,130 C190,90 130,95 80,130 C60,145 50,170 55,195 C65,240 120,250 160,230" stroke-width="3" opacity="0.6" />
+    <path d="M300,310 C300,240 320,180 370,130 C410,90 470,95 520,130 C540,145 550,170 545,195 C535,240 480,250 440,230" stroke-width="3" opacity="0.6" />
+    
+    <!-- Crown Spire Branches -->
+    <path d="M300,270 C290,200 260,140 230,80 C215,50 240,30 270,40 C300,50 300,75 300,105" stroke-width="3.5" opacity="0.75" />
+    <path d="M300,270 C310,200 340,140 370,80 C385,50 360,30 330,40 C300,50 300,75 300,105" stroke-width="3.5" opacity="0.75" />
+    <path d="M300,110 L300,35" stroke-width="3" opacity="0.8" />
+
+    <!-- Secondary Foliage Arcs & Constellations -->
+    <path d="M230,130 C190,140 160,170 145,210" stroke-width="2" opacity="0.5" />
+    <path d="M370,130 C410,140 440,170 455,210" stroke-width="2" opacity="0.5" />
+    <path d="M260,170 C220,190 190,210 180,250" stroke-width="2" opacity="0.5" />
+    <path d="M340,170 C380,190 410,210 420,250" stroke-width="2" opacity="0.5" />
+    
+    <!-- Lateral Canopy Twigs & Runes -->
+    <path d="M130,95 C110,65 75,70 65,95" stroke-width="1.8" opacity="0.5" />
+    <path d="M470,95 C490,65 525,70 535,95" stroke-width="1.8" opacity="0.5" />
+    <path d="M190,90 C175,60 145,55 130,75" stroke-width="1.8" opacity="0.5" />
+    <path d="M410,90 C425,60 455,55 470,75" stroke-width="1.8" opacity="0.5" />
+    
+    <!-- Star/Wisdom Nodes in Canopy -->
+    <circle cx="300" cy="35" r="3.5" fill="#2dd4bf" stroke="none" />
+    <circle cx="230" cy="80" r="2.5" fill="#2dd4bf" stroke="none" />
+    <circle cx="370" cy="80" r="2.5" fill="#2dd4bf" stroke="none" />
+    <circle cx="80" cy="130" r="2.5" fill="#2dd4bf" stroke="none" />
+    <circle cx="520" cy="130" r="2.5" fill="#2dd4bf" stroke="none" />
+    <circle cx="160" cy="230" r="2.5" fill="#2dd4bf" stroke="none" />
+    <circle cx="440" cy="230" r="2.5" fill="#2dd4bf" stroke="none" />
+
+    <!-- ======================================================================
+         MASSIVE ANCIENT TRUNK
+         ====================================================================== -->
+    <path d="M285,350 C285,290 270,240 295,190 L305,190 C330,240 315,290 315,350 Z" stroke-width="4" fill="#042f2e" fill-opacity="0.35" />
+    <path d="M293,340 C293,280 285,240 300,205" stroke-width="2" opacity="0.6" />
+    <path d="M307,340 C307,280 315,240 300,205" stroke-width="2" opacity="0.6" />
+    <path d="M300,350 L300,210" stroke-width="1.5" stroke-dasharray="8,5" opacity="0.5" />
+
+    <!-- ======================================================================
+         ROOT SYSTEM (Descending into the Nine Realms)
+         ====================================================================== -->
+    <!-- Right Root System (Niflheim / Jotunheim) -->
+    <path d="M315,350 C330,380 370,410 420,440 C460,465 500,480 540,510" stroke-width="5" opacity="0.8" />
+    <path d="M420,440 C430,470 460,500 480,540" stroke-width="3" opacity="0.6" />
+    <path d="M370,410 C380,450 395,490 410,545" stroke-width="2.5" opacity="0.5" />
+    <path d="M460,465 C480,490 515,505 530,535" stroke-width="2" opacity="0.5" />
+
+    <!-- Center Deep Root (Midgard Deep Core) -->
+    <path d="M300,350 C305,390 300,440 305,490 C308,525 302,555 300,580" stroke-width="4" opacity="0.75" />
+    <path d="M302,420 C285,450 280,490 275,540" stroke-width="2.5" opacity="0.5" />
+    <path d="M305,450 C320,480 325,520 330,560" stroke-width="2" opacity="0.5" />
+
+    <!-- Left Root System (Descending into MÍMISBRUNNR) -->
+    <path d="M285,350 C265,380 230,405 190,425 C160,440 145,465 140,500" stroke-width="6" opacity="0.9" />
+    <path d="M230,405 C200,420 175,415 150,420" stroke-width="3.5" opacity="0.8" />
+    
+    <!-- Tendril wrapping tightly around the rim of the well -->
+    <path d="M190,425 C175,445 165,475 165,510 C165,535 155,560 145,580" stroke-width="3.5" opacity="0.75" />
+    <path d="M140,500 C130,520 115,545 90,570" stroke-width="3" opacity="0.7" />
+    <path d="M140,465 C115,480 95,500 70,525" stroke-width="2.5" opacity="0.6" />
+    <path d="M190,425 C210,455 220,495 225,540" stroke-width="2.5" opacity="0.5" />
+  </g>
+
+  <!-- ======================================================================
+       MÍMISBRUNNR (THE SACRED WELL OF WISDOM BENEATH THE ROOT)
+       ====================================================================== -->
+  <!-- Well Ambient Sub-Surface Glow -->
+  <ellipse cx="140" cy="460" rx="70" ry="32" fill="url(#waterGlow)" />
+
+  <!-- Well Base & Masonry Walls -->
+  <path d="M80,460 C80,495 105,525 140,525 C175,525 200,495 200,460 L195,450 C195,475 170,505 140,505 C110,505 85,475 85,450 Z" 
+        fill="url(#wellGrad)" stroke="#38bdf8" stroke-width="2" opacity="0.85" />
+
+  <!-- Masonry Stone Course Seams -->
+  <g fill="none" stroke="#0ea5e9" stroke-width="1.5" opacity="0.6">
+    <path d="M90,475 C105,492 125,500 140,500 C155,500 175,492 190,475" />
+    <path d="M100,495 C115,510 130,515 140,515 C150,515 165,510 180,495" />
+    <!-- Vertical Mortar Lines -->
+    <line x1="110" y1="465" x2="112" y2="485" />
+    <line x1="140" y1="467" x2="140" y2="488" />
+    <line x1="170" y1="465" x2="168" y2="485" />
+    <line x1="125" y1="487" x2="124" y2="507" />
+    <line x1="155" y1="487" x2="156" y2="507" />
+  </g>
+
+  <!-- Well Outer Stone Brim (Perspective Ring) -->
+  <ellipse cx="140" cy="452" rx="60" ry="20" fill="#042f2e" stroke="#38bdf8" stroke-width="2.5" opacity="0.95" />
+
+  <!-- Well Water Surface (Mirror of Wisdom) -->
+  <ellipse cx="140" cy="452" rx="48" ry="14" fill="#0369a1" fill-opacity="0.75" stroke="#2dd4bf" stroke-width="1.8" />
+
+  <!-- Concentric Water Ripples -->
+  <ellipse cx="140" cy="452" rx="34" ry="9" fill="none" stroke="#7dd3fc" stroke-width="1.2" stroke-dasharray="7,4" opacity="0.85" />
+  <ellipse cx="140" cy="452" rx="20" ry="5" fill="none" stroke="#e0f2fe" stroke-width="1.2" opacity="0.9" />
+  <circle cx="140" cy="452" r="2.5" fill="#ffffff" />
+
+  <!-- Sacred Runic Water Gleam Emanation -->
+  <line x1="140" y1="428" x2="140" y2="442" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+  <line x1="128" y1="435" x2="152" y2="435" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+</svg>

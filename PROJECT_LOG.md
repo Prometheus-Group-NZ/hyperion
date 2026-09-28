@@ -1,8 +1,5 @@
 # HYPERION — Project Log
 
-## Decisions
-- 240444ZSEPT26 · Tank Combat Arena card links to `https://games.prometheus.nz/tank` (sub-path under the Games Cluster host) · rationale: serves the game from the existing games host without provisioning a new subdomain · rejected: dedicated `tank.prometheus.nz` subdomain
-
 ## Mission
 Build **HYPERION**, the high-density minimalist tactical launchpad and central ingress catalog for Prometheus Group NZ on Cloudflare Pages (`hyperion.prometheus.nz`).
 
@@ -30,8 +27,5 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 19: Implement distant ambient flickering fire glow from the right flank, 50% darker dormant sleep state, and physical 60fps curved eyelid aperture peeling.
 - [x] Task 20: Implement synchronized card-dive ocular zoom targeting Prometheus's eye to approx 90% of screen with verified mathematical landmark projection.
 - [x] Task 21: Add a linked card for Tank Combat Arena under the Games sector (href https://games.prometheus.nz/tank), placed first in the deep project cluster.
-
-## To-do
-
-## Log
-- 240444ZSEPT26 — Added the Tank Combat Arena card to the Games sector in `public/js/app.js` (`https://games.prometheus.nz/tank`, port :8080) as NODE // 01, and listed it in the README Games roster. Verified the entry renders through the existing deep-cluster card builder (same anchor/title/subdomain/port/desc schema as the other cards).
+- [x] Task 22: Realign 9-sector grid (Mímisbrunnr at Slot 03 with 9 placeholders for mimisbrunnr.prometheus.nz, Intel moved to Centre Slot 05, Games moved to Slot 09) and implement darkened SVG Yggdrasil tree with root well background graphic.
+- [ ] Task 23: Mirror hyperion.prometheus.nz to yggdrasil.prometheus.nz via dedicated GitHub repo Prometheus-Group-NZ/yggdrasil with Cloudflare Git deployment.
