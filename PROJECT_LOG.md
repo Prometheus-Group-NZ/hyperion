@@ -28,4 +28,4 @@ Build **HYPERION**, the high-density minimalist tactical launchpad and central i
 - [x] Task 20: Implement synchronized card-dive ocular zoom targeting Prometheus's eye to approx 90% of screen with verified mathematical landmark projection.
 - [x] Task 21: Add a linked card for Tank Combat Arena under the Games sector (href https://games.prometheus.nz/tank), placed first in the deep project cluster.
 - [x] Task 22: Realign 9-sector grid (Mímisbrunnr at Slot 03 with 9 placeholders for mimisbrunnr.prometheus.nz, Intel moved to Centre Slot 05, Games moved to Slot 09) and implement darkened SVG Yggdrasil tree with root well background graphic.
-- [ ] Task 23: Mirror hyperion.prometheus.nz to yggdrasil.prometheus.nz via dedicated GitHub repo Prometheus-Group-NZ/yggdrasil with Cloudflare Git deployment.
+- [x] Task 23: Mirror hyperion.prometheus.nz to yggdrasil.prometheus.nz via dedicated GitHub repo Prometheus-Group-NZ/yggdrasil with Cloudflare Git deployment.
